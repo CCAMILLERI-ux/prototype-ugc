@@ -1,0 +1,319 @@
+<title>Quel film ce soir ?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a phone running the concept app on the left, the product note that frames it on the right; stacks on mobile */
+:root{
+  --page:#ECEEF4; --surface:#FFFFFF; --ink:#1B1C3A; --muted:#5B5E7A; --line:#D5D8E4; --accent:#3A3DB0;
+  --scr:#14141F; --scr2:#1F1F2E; --scr3:#2A2A3D; --scrInk:#F4F2EC; --scrMuted:#A6A5B8; --amber:#F2B33D; --amberInk:#241A05;
+  --ok:#2E8B57;
+  --f-display:"Big Shoulders Display", "Arial Narrow", sans-serif;
+  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --page:#0F1018; --surface:#181A26; --ink:#E9E9F2; --muted:#A0A2B8; --line:#2C2F42; --accent:#9EA1FF; --ok:#5CC08A; color-scheme:dark}}
+:root[data-theme="dark"]{--page:#0F1018; --surface:#181A26; --ink:#E9E9F2; --muted:#A0A2B8; --line:#2C2F42; --accent:#9EA1FF; --ok:#5CC08A; color-scheme:dark}
+body{background:var(--page); color:var(--ink); font-family:var(--f-body); font-size:15px; line-height:1.5}
+.wrap{max-width:1120px; margin:0 auto; padding-block:28px 40px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); display:grid; gap:28px}
+header.top{display:grid; gap:6px}
+.eyebrow{font:600 12px/1 var(--f-body); letter-spacing:.12em; text-transform:uppercase; color:var(--accent)}
+h1{font:800 clamp(40px,6vw,64px)/.95 var(--f-display); letter-spacing:.01em; margin:0; text-wrap:balance}
+.lede{max-width:62ch; color:var(--muted); margin:4px 0 0}
+.grid{display:grid; grid-template-columns:minmax(0,400px) minmax(0,1fr); gap:32px; align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- phone ---------- */
+.phone{background:#0A0A12; border-radius:44px; padding:12px; box-shadow:0 30px 60px -30px rgba(20,20,60,.45); max-width:400px; width:100%; justify-self:center}
+.screen{background:var(--scr); color:var(--scrInk); border-radius:34px; overflow:hidden; min-height:720px; display:flex; flex-direction:column}
+.status{display:flex; justify-content:space-between; padding:12px 22px 0; font:600 12px var(--f-body); color:var(--scrMuted)}
+.app{padding:14px 18px 20px; display:flex; flex-direction:column; gap:14px; flex:1}
+.apptop{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.brand{font:800 26px/1 var(--f-display); letter-spacing:.02em}
+.brand span{color:var(--amber)}
+.where{font:500 12px var(--f-body); color:var(--scrMuted)}
+.ask{background:var(--scr2); border-radius:18px; padding:12px; display:grid; gap:10px}
+.ask label{font:600 13px var(--f-body); color:var(--scrMuted)}
+.ask textarea{width:100%; box-sizing:border-box; resize:none; min-height:62px; background:var(--scr3); border:1px solid transparent; border-radius:12px; color:var(--scrInk); font:500 15px/1.4 var(--f-body); padding:10px 12px}
+.ask textarea:focus{outline:none; border-color:var(--amber)}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{background:transparent; color:var(--scrInk); border:1px solid #3A3A52; border-radius:999px; padding:5px 10px; font:500 12px var(--f-body); cursor:pointer}
+.chip:hover,.chip:focus-visible{border-color:var(--amber); outline:none}
+.go{background:var(--amber); color:var(--amberInk); border:0; border-radius:12px; padding:11px 14px; font:700 15px var(--f-body); cursor:pointer}
+.go:disabled{opacity:.6; cursor:wait}
+.go:focus-visible{outline:2px solid #fff; outline-offset:2px}
+.engine{display:flex; justify-content:space-between; align-items:center; gap:8px; font:500 11.5px var(--f-body); color:var(--scrMuted)}
+.engine .dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:#6B6B80; margin-right:6px; vertical-align:1px}
+.engine .dot.on{background:#5CC08A}
+.understood{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+.understood .k{font:600 11px var(--f-body); letter-spacing:.08em; text-transform:uppercase; color:var(--scrMuted); margin-right:2px}
+.tag{background:#2B2740; color:#E7DDFF; border-radius:6px; padding:3px 8px; font:500 12px var(--f-body)}
+.results{display:grid; gap:10px}
+.card{background:var(--scr2); border-radius:16px; padding:12px; display:grid; grid-template-columns:52px minmax(0,1fr); gap:12px}
+.poster{border-radius:8px; height:74px; display:grid; place-items:end start; padding:4px 7px; font:800 34px/1 var(--f-display); color:rgba(255,255,255,.92)}
+.card h3{margin:0; font:700 15.5px/1.25 var(--f-body)}
+.meta{font:500 12px var(--f-body); color:var(--scrMuted); margin-top:2px}
+.why{font:500 13px/1.4 var(--f-body); margin:6px 0 8px; color:#DCD9E8}
+.row{display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap}
+.time{font:500 15px var(--f-mono); color:var(--amber)}
+.seats{font:500 11.5px var(--f-body); color:var(--scrMuted)}
+.book{background:transparent; border:1px solid var(--amber); color:var(--amber); border-radius:10px; padding:6px 12px; font:700 13px var(--f-body); cursor:pointer}
+.book:hover,.book:focus-visible{background:var(--amber); color:var(--amberInk); outline:none}
+.note{font:500 12.5px var(--f-body); color:var(--scrMuted)}
+.sheet{background:#F4F2EC; color:#1B1C3A; border-radius:16px; padding:14px; display:grid; gap:6px}
+.sheet strong{font:800 20px/1 var(--f-display); letter-spacing:.02em}
+.sheet .mono{font:500 13px var(--f-mono)}
+.sheet button{justify-self:start; background:#1B1C3A; color:#F4F2EC; border:0; border-radius:10px; padding:7px 12px; font:600 13px var(--f-body); cursor:pointer}
+.thinking{font:500 13px var(--f-body); color:var(--scrMuted)}
+
+/* ---------- product note ---------- */
+.notecol{display:grid; gap:18px; min-width:0}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px 22px; display:grid; gap:10px}
+.panel h2{margin:0; font:800 26px/1 var(--f-display); letter-spacing:.02em; text-transform:uppercase}
+.panel h4{margin:0; font:700 13px var(--f-body); letter-spacing:.08em; text-transform:uppercase; color:var(--accent)}
+.panel p{margin:0; max-width:66ch}
+.two{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px}
+@media (max-width:560px){.two{grid-template-columns:minmax(0,1fr)}}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:14px}
+th,td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+th{font:600 12px var(--f-body); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+td.num{font-variant-numeric:tabular-nums; white-space:nowrap; font-weight:600}
+ul.clean{margin:0; padding-left:18px; display:grid; gap:4px}
+.small{font-size:13px; color:var(--muted)}
+footer{font-size:12.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:14px}
+@media (prefers-reduced-motion:no-preference){.card{animation:rise .35s ease both}@keyframes rise{from{transform:translateY(6px)}to{transform:none}}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Prototype · IA embarquée dans le parcours de réservation</div>
+    <h1>Quel film ce soir&nbsp;?</h1>
+    <p class="lede">Le spectateur dit ce dont il a envie, l'assistant lui propose trois séances réelles du programme et le mène jusqu'à la réservation. Essayez une demande dans l'application.</p>
+  </header>
+
+  <div class="grid">
+    <div class="phone" aria-label="Application mobile, démonstration">
+      <div class="screen">
+        <div class="status"><span>20:12</span><span>5G · 82 %</span></div>
+        <div class="app">
+          <div class="apptop">
+            <div class="brand">CINÉ<span>CONCEPT</span></div>
+            <div class="where">Paris · 3 cinémas</div>
+          </div>
+
+          <form class="ask" id="askForm">
+            <label for="q">Dites-nous ce qui vous ferait plaisir</label>
+            <textarea id="q" rows="2">Un film drôle ce soir après 20 h, avec mon ado de 13 ans</textarea>
+            <div class="chips" id="chips"></div>
+            <button class="go" id="go" type="submit">Trouver ma séance</button>
+            <div class="engine"><span><i class="dot" id="dot"></i><span id="engineLabel">Moteur : règles locales</span></span><span id="engineHint"></span></div>
+          </form>
+
+          <div class="understood" id="understood"></div>
+          <div class="results" id="results" aria-live="polite"></div>
+          <p class="note">Démo : programme et cinémas fictifs, aucune réservation réelle.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="notecol">
+      <section class="panel">
+        <h2>Le problème</h2>
+        <p>Pour choisir une séance, le spectateur croise le film, l'horaire, le cinéma, la version et l'âge de ceux qui l'accompagnent. Cela demande plusieurs allers-retours entre les écrans avant de réserver, et une partie abandonne en chemin.</p>
+        <p><strong>Hypothèse :</strong> une demande formulée en langage naturel raccourcit le temps de choix et augmente le passage à la réservation, sans remplacer la recherche classique.</p>
+      </section>
+
+      <section class="panel">
+        <h4>Objectifs fixés avant la mise en ligne</h4>
+        <div class="tbl"><table>
+          <thead><tr><th>Indicateur</th><th>Cible d'exemple</th><th>Mesure</th></tr></thead>
+          <tbody>
+            <tr><td>Passage de la recherche à la réservation</td><td class="num">+10 %</td><td>Tunnel comparé avec et sans assistant</td></tr>
+            <tr><td>Temps médian jusqu'au choix d'une séance</td><td class="num">−30 %</td><td>Événements de parcours</td></tr>
+            <tr><td>Réservations passées via l'assistant</td><td class="num">15 %</td><td>Part du total sur l'app</td></tr>
+            <tr><td>Demandes sans proposition utile</td><td class="num">&lt; 10 %</td><td>Clic « Autre chose » ou abandon</td></tr>
+          </tbody>
+        </table></div>
+        <p class="small">Cibles indicatives, à caler avec la Web Analyst sur les chiffres actuels du tunnel avant de lancer le test A/B.</p>
+      </section>
+
+      <div class="two">
+        <section class="panel">
+          <h4>Test utilisateurs</h4>
+          <ul class="clean">
+            <li>5 spectateurs, 3 scénarios : sortie en famille, soirée en VO, envie de dernière minute.</li>
+            <li>On observe le temps de choix, les reformulations et la confiance dans les propositions.</li>
+            <li>Arbitrage : ce qui ne sert pas la réservation sort du périmètre.</li>
+          </ul>
+        </section>
+        <section class="panel">
+          <h4>À cadrer avec la DSI</h4>
+          <ul class="clean">
+            <li>Programme et places en temps réel via l'API billetterie.</li>
+            <li>Garde-fou : l'IA ne peut proposer qu'une séance qui existe, vérifiée côté code.</li>
+            <li>Coût par requête, temps de réponse, données personnelles.</li>
+            <li>Repli automatique sur la recherche classique si l'IA ne répond pas.</li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="panel">
+        <h4>Comment fonctionne la démo</h4>
+        <p>Si vous l'autorisez, la demande est interprétée par Claude, qui choisit parmi les séances du programme fictif. Sinon, un moteur de règles simple prend le relais : la page fonctionne dans les deux cas, comme le ferait le produit en production.</p>
+      </section>
+
+      <footer>Prototype conceptuel réalisé par Caroline Camilleri avec l'IA. Films, cinémas et séances sont fictifs et sans lien avec une enseigne existante.</footer>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+const FILMS = {
+  voisins:{t:"Les Voisins du 3e", g:"comédie", d:102, r:"Tous publics", c:["#E0663A","#7A2A52"], s:"Une colocation improbable entre un retraité grincheux et deux étudiants."},
+  lisbonne:{t:"Plan B à Lisbonne", g:"comédie romantique", d:115, r:"Tous publics", c:["#E8A33C","#B23A5A"], s:"Deux inconnus bloqués à Lisbonne par une grève des avions."},
+  fuite:{t:"Ligne de fuite", g:"thriller", d:128, r:"-12 ans", c:["#2F4A6E","#0F1626"], s:"Une contrôleuse aérienne découvre un vol qui n'existe pas."},
+  orbite:{t:"Orbite basse", g:"science-fiction", d:141, r:"Tous publics", c:["#3640A8","#0B0D2A"], s:"Une mission de réparation en orbite tourne au huis clos."},
+  hiver:{t:"Le Dernier Hiver", g:"drame", d:118, r:"Tous publics", c:["#7D8FA3","#2D3440"], s:"Trois générations réunies dans une ferme du Jura."},
+  pipo:{t:"Pipo et la Forêt bleue", g:"animation", d:84, r:"Tous publics", c:["#2E9E8F","#174A6B"], s:"Un petit renard part à la recherche des lucioles disparues."},
+  osaka:{t:"Nuit blanche à Osaka", g:"action", d:110, r:"-12 ans", c:["#D2414B","#2A0F1A"], s:"Une coursière doit traverser la ville avant l'aube."},
+  maison:{t:"La Maison du bout", g:"horreur", d:99, r:"-16 ans", c:["#4A3B3B","#100A0A"], s:"Une maison de vacances dont personne ne revient tout à fait."},
+  rock:{t:"Mes années rock", g:"documentaire musical", d:96, r:"Tous publics", c:["#C78B2B","#3A2A12"], s:"Les salles de concert françaises racontées par ceux qui y ont joué."},
+  selle:{t:"Tous en selle !", g:"comédie familiale", d:91, r:"Tous publics", c:["#6BAF4B","#2A5A2E"], s:"Une famille traverse la France à vélo, sans GPS."}
+};
+const CINES = ["Concept Bercy","Concept Odéon","Concept Gobelins"];
+const PLAN = [
+ ["voisins",0,"tonight","18:10","VF"],["voisins",0,"tonight","20:30","VF"],["voisins",2,"tonight","21:15","VF"],["voisins",1,"sat","14:00","VF"],
+ ["lisbonne",1,"tonight","19:40","VF"],["lisbonne",1,"tonight","22:00","VO"],["lisbonne",0,"sat","17:30","VF"],
+ ["fuite",0,"tonight","20:45","VF"],["fuite",1,"tonight","21:30","VO"],["fuite",2,"sat","22:10","VO"],
+ ["orbite",0,"tonight","19:00","VO"],["orbite",2,"tonight","20:15","VF"],["orbite",0,"sat","15:45","VF"],
+ ["hiver",1,"tonight","18:30","VO"],["hiver",1,"sat","11:00","VO"],
+ ["pipo",2,"tonight","17:20","VF"],["pipo",0,"sat","10:15","VF"],["pipo",2,"sat","11:30","VF"],
+ ["osaka",0,"tonight","22:15","VO"],["osaka",2,"tonight","20:50","VF"],
+ ["maison",1,"tonight","22:30","VF"],["maison",0,"sat","21:45","VO"],
+ ["rock",1,"tonight","20:00","VO"],
+ ["selle",2,"tonight","19:20","VF"],["selle",0,"sat","10:45","VF"],["selle",1,"sat","16:00","VF"]
+];
+const SEANCES = PLAN.map((p,i)=>({id:"S"+(i+1), film:p[0], cine:CINES[p[1]], day:p[2], time:p[3], v:p[4], seats:[12,34,7,58,21,4,40,16][i%8]}));
+const DAY = {tonight:"Ce soir", sat:"Demain (samedi)"};
+const byId = Object.fromEntries(SEANCES.map(s=>[s.id,s]));
+const mins = t=>{const [h,m]=t.split(":").map(Number); return h*60+m};
+const fmtD = d=>Math.floor(d/60)+" h "+String(d%60).padStart(2,"0");
+
+const EXAMPLES = ["Un film drôle ce soir après 20 h, avec mon ado de 13 ans","Quelque chose d'intense en VO, ce soir vers Bercy","Samedi matin avec deux enfants de 6 et 8 ans","Pas trop long, je sors du bureau à 19 h"];
+const $ = id=>document.getElementById(id);
+const chips=$("chips");
+EXAMPLES.forEach(e=>{const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=e; b.onclick=()=>{$("q").value=e; run();}; chips.append(b);});
+
+/* ---------- local rule engine (fallback) ---------- */
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
+function localPick(q){
+  const n=norm(q); const und=[]; const want={};
+  const G=[[/drol|rire|marrant|comed|leger/,["comédie","comédie romantique","comédie familiale"],"Comédie"],[/intense|suspense|thriller|frisson/,["thriller","action"],"Intense"],[/peur|horreur|flipp/,["horreur"],"Horreur"],[/science|espace|sf\b/,["science-fiction"],"Science-fiction"],[/romant|amoureu|couple|date/,["comédie romantique","drame"],"Romantique"],[/emouv|drame|pleur/,["drame"],"Émouvant"],[/musique|concert|rock|docu/,["documentaire musical"],"Musique"],[/action|bagarre/,["action"],"Action"]];
+  for(const [re,gs,l] of G){ if(re.test(n)){want.genres=(want.genres||[]).concat(gs); und.push(l);} }
+  if(/samedi|demain/.test(n)){want.day="sat"; und.push("Samedi");} else {want.day="tonight"; und.push("Ce soir");}
+  let m=n.match(/(?:apres|a partir de|des)\s*(\d{1,2})\s*h\s*(\d{2})?/); if(m){want.after=+m[1]*60+(+(m[2]||0)); und.push("Après "+m[1]+" h"+(m[2]||""));}
+  m=n.match(/vers\s*(\d{1,2})\s*h/); if(m){want.around=+m[1]*60; und.push("Vers "+m[1]+" h");}
+  m=n.match(/(?:sors|sortie|libre|fini).*?(\d{1,2})\s*h/); if(m&&!want.after){want.after=+m[1]*60+30; und.push("À partir de "+m[1]+" h 30");}
+  if(/matin/.test(n)){want.before=12*60; und.push("Le matin");}
+  if(/enfant|petit|famille|\b[3-9] ans/.test(n)){want.kids=true; want.genres=(want.genres||[]).concat(["animation","comédie familiale"]); und.push("Avec des enfants");}
+  else if(/ado|\b1[0-5] ans/.test(n)){want.teen=true; und.push("Avec un ado");}
+  if(/\bvo\b|version originale|anglais/.test(n)){want.v="VO"; und.push("VO");}
+  if(/\bvf\b/.test(n)){want.v="VF"; und.push("VF");}
+  if(/pas trop long|court|rapide/.test(n)){want.short=true; und.push("Moins de 1 h 45");}
+  CINES.forEach(c=>{const k=norm(c.split(" ")[1]); if(n.includes(k)){want.cine=c; und.push(c);}});
+  const scored=SEANCES.map(s=>{const f=FILMS[s.film]; let sc=0; const why=[];
+    if(s.day!==want.day) return null;
+    const t=mins(s.time);
+    if(want.after && t<want.after) return null;
+    if(want.before && t>=want.before) return null;
+    if(want.kids && (f.r!=="Tous publics" || !["animation","comédie familiale","comédie"].includes(f.g))) return null;
+    if(want.teen && f.r==="-16 ans") return null;
+    if(want.genres){ if(want.genres.includes(f.g)){sc+=5; why.push(f.g.charAt(0).toUpperCase()+f.g.slice(1));} else sc-=2; }
+    if(want.kids && ["animation","comédie familiale"].includes(f.g)){sc+=3;}
+    if(want.teen && f.r!=="Tous publics"){why.push("accessible dès 12 ans");}
+    if(want.v){ if(s.v===want.v){sc+=2; why.push("en "+s.v);} else sc-=3; }
+    if(want.cine){ if(s.cine===want.cine){sc+=3; why.push("à "+s.cine);} else sc-=1; }
+    if(want.around){ sc+=Math.max(0,3-Math.abs(t-want.around)/30); }
+    if(want.short){ if(f.d<=105){sc+=3; why.push("seulement "+fmtD(f.d));} else sc-=3; }
+    if(want.after){ why.push("commence à "+s.time.replace(":"," h ")); sc+=Math.max(0,2-(t-want.after)/60); }
+    sc+=s.seats>10?0.5:0;
+    return {s,sc,why};
+  }).filter(Boolean).sort((a,b)=>b.sc-a.sc);
+  const out=[]; const seen=new Set();
+  for(const x of scored){ if(seen.has(x.s.film)) continue; seen.add(x.s.film); out.push({id:x.s.id, why:(x.why.length?x.why.join(", "):"Bonne séance disponible au créneau demandé")+"."}); if(out.length===3) break; }
+  return {understood:und, picks:out};
+}
+
+/* ---------- Claude (when the viewer allows it) ---------- */
+let sample=null, aiOff=false, ctl=null;
+function setEngine(){ const on=!!sample && !aiOff; $("dot").classList.toggle("on",on); $("engineLabel").textContent = on?"Moteur : IA (Claude)":"Moteur : règles locales"; $("engineHint").textContent = on?"Programme fictif":"Programme fictif"; }
+if(window.claude && claude.use){ claude.use("sample").then(s=>{sample=s; setEngine();}).catch(()=>{}); }
+setEngine();
+
+function programText(){
+  return SEANCES.map(s=>{const f=FILMS[s.film]; return [s.id,f.t,f.g,fmtD(f.d),f.r,s.cine,DAY[s.day],s.time,s.v,s.seats+" places"].join(" | ");}).join("\n");
+}
+async function aiPick(q){
+  const prompt = "Tu es l'assistant de réservation d'une app de cinéma. Voici le programme (une séance par ligne : id | film | genre | durée | classification | cinéma | jour | heure | version | places restantes) :\n\n"+programText()+
+  "\n\nDemande du spectateur : \""+q+"\"\n\nChoisis les 3 séances qui répondent le mieux à la demande, 3 films différents, uniquement parmi les ids listés. Respecte strictement le jour, les horaires, la version et l'âge du public (pas de -16 ans avec un ado, que du Tous publics avec des enfants). Réponds uniquement en JSON : {\"compris\":[\"jusqu'à 5 étiquettes très courtes résumant ce que tu as compris\"],\"seances\":[{\"id\":\"S1\",\"pourquoi\":\"une phrase de 15 mots maximum, en français, adressée au spectateur\"}]}";
+  ctl = new AbortController();
+  const r = await sample.json(prompt,{modelTier:"quick", signal:ctl.signal});
+  const picks=(Array.isArray(r&&r.seances)?r.seances:[]).filter(p=>p&&byId[String(p.id)]).map(p=>({id:String(p.id), why:String(p.pourquoi||"")})).slice(0,3);
+  if(!picks.length) throw {code:"empty"};
+  return {understood:(Array.isArray(r.compris)?r.compris:[]).map(String).slice(0,5), picks};
+}
+
+/* ---------- render ---------- */
+function render(res){
+  const u=$("understood"); u.innerHTML="";
+  if(res.understood.length){ const k=document.createElement("span"); k.className="k"; k.textContent="Compris"; u.append(k); res.understood.forEach(t=>{const s=document.createElement("span"); s.className="tag"; s.textContent=t; u.append(s);}); }
+  const box=$("results"); box.innerHTML="";
+  if(!res.picks.length){ const p=document.createElement("p"); p.className="thinking"; p.textContent="Aucune séance ne correspond exactement. Essayez un autre horaire ou un autre jour."; box.append(p); return; }
+  res.picks.forEach((p,i)=>{
+    const s=byId[p.id], f=FILMS[s.film];
+    const c=document.createElement("article"); c.className="card"; c.style.animationDelay=(i*70)+"ms";
+    c.innerHTML='<div class="poster"></div><div><h3></h3><div class="meta"></div><p class="why"></p><div class="row"><div><div class="time"></div><div class="seats"></div></div><button class="book" type="button">Réserver</button></div></div>';
+    const po=c.querySelector(".poster"); po.style.background="linear-gradient(160deg,"+f.c[0]+","+f.c[1]+")"; po.textContent=f.t.split(/[\s']+/).filter(w=>!/^(les|le|la|du|de|et|à|l|mes|en|plan)$/i.test(w))[0].slice(0,1).toUpperCase();
+    c.querySelector("h3").textContent=f.t;
+    c.querySelector(".meta").textContent=f.g+" · "+fmtD(f.d)+" · "+f.r;
+    c.querySelector(".why").textContent=p.why;
+    c.querySelector(".time").textContent=DAY[s.day]+" "+s.time+" · "+s.v;
+    c.querySelector(".seats").textContent=s.cine+" · "+(s.seats<10?"plus que "+s.seats+" places":s.seats+" places");
+    c.querySelector(".book").onclick=()=>confirmSheet(s,c);
+    box.append(c);
+  });
+}
+function confirmSheet(s,card){
+  const f=FILMS[s.film]; const sh=document.createElement("div"); sh.className="sheet";
+  sh.innerHTML='<strong></strong><span class="mono"></span><span></span><button type="button">Revenir aux propositions</button>';
+  sh.querySelector("strong").textContent=f.t;
+  sh.querySelector(".mono").textContent=DAY[s.day]+" · "+s.time+" · "+s.v+" · "+s.cine;
+  sh.querySelector("span:not(.mono)").textContent="Étape suivante du vrai parcours : choix des places et paiement. Ici, la démo s'arrête.";
+  sh.querySelector("button").onclick=()=>sh.replaceWith(card);
+  card.replaceWith(sh);
+}
+
+async function run(){
+  const q=$("q").value.trim(); if(!q) return;
+  const go=$("go");
+  if(sample && !aiOff){
+    go.disabled=true; go.textContent="Je cherche…";
+    $("results").innerHTML='<p class="thinking">L\'assistant parcourt le programme…</p>'; $("understood").innerHTML="";
+    try{ render(await aiPick(q)); }
+    catch(e){
+      if(e && ["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e.code)){aiOff=true; setEngine();}
+      if(!(e&&e.code==="cancelled")) render(localPick(q));
+    }
+    finally{ go.disabled=false; go.textContent="Trouver ma séance"; }
+  } else {
+    render(localPick(q));
+  }
+}
+$("askForm").addEventListener("submit",e=>{e.preventDefault(); run();});
+$("q").addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){e.preventDefault(); run();} });
+render(localPick($("q").value));
+})();
+</script>
