@@ -7,7 +7,7 @@
 <meta name="description" content="Prototype conceptuel non officiel – Caroline Camilleri. Assistant de choix de séance dans l'univers UGC.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Barlow+Condensed:wght@400;500;600&display=swap">
 <style>
 /* Tokens : UGC-DESIGN-SYSTEM.md §3, §5, §7, §28 */
 :root{
@@ -18,7 +18,7 @@
   --cinema-black:#090B12;
   --success:#18794E; --warning:#A15C00; --error:#C62828; --info:#1769E0;
 
-  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-6:24px; --space-8:32px; --space-12:48px; --space-16:64px;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-6:24px; --space-8:32px; --space-12:48px; --space-16:64px; --space-20:80px;
   --radius-xs:2px; --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-pill:999px;
   --shadow-card:0 4px 16px rgba(0,0,0,.08);
   --shadow-overlay:0 12px 32px rgba(0,0,0,.18);
@@ -250,55 +250,151 @@ textarea:focus{outline:none; border-color:var(--app-cyan)}
 .app-note{display:flex; gap:var(--space-2); align-items:flex-start; font:400 12px/16px var(--font); color:var(--app-muted); padding-top:var(--space-4); border-top:1px solid var(--app-line)}
 
 /* ---------- Mode « Site web » ----------
-   Même DOM et même logique que l'app ; seules la mise en page et la réservation (fenêtre modale) changent. */
+   Même DOM et même logique que l'app. Habillage relevé sur une capture de ugc.fr : page blanche,
+   double en-tête (barre nuit + rubriques), capitales condensées, CTA rouge à angles droits,
+   affiches sans arrondi, pied de page nuit. */
 .modes{display:inline-flex; justify-self:start; border:1px solid var(--ugc-blue); border-radius:var(--radius-sm); overflow:hidden}
 .mode{display:inline-flex; align-items:center; gap:var(--space-2); min-height:44px; padding:0 var(--space-4); border:0; background:var(--white); color:var(--ugc-blue);
   font:700 14px/20px var(--font); cursor:pointer; transition:background var(--duration-fast)}
 .mode+.mode{border-left:1px solid var(--ugc-blue)}
 .mode:hover{background:var(--surface-subtle)}
 .mode[aria-pressed="true"]{background:var(--ugc-blue); color:var(--white)}
-.browser,.web-header{display:none}
-.is-web .layout,.layout.is-web{grid-template-columns:minmax(0,1fr)}
+.browser,.web-header,.web-hero,.web-footer{display:none}
+.layout.is-web{grid-template-columns:minmax(0,1fr)}
 .device.is-web{max-width:1280px; justify-self:stretch; padding:0; background:none; box-shadow:var(--shadow-card); border-radius:var(--radius-lg)}
-.screen.is-web{min-height:0}
-.screen.is-web .status,.screen.is-web .app-header,.screen.is-web .picker,.screen.is-web .pills,.screen.is-web .tabbar{display:none}
-.screen.is-web .browser{display:flex; align-items:center; gap:var(--space-4); padding:var(--space-2) var(--space-4); background:#E5E8F0; color:#4A5070; font:400 12px/16px var(--font)}
+
+.screen.is-web{
+  --web-red:#D7063B; --web-red-dark:#B0002E; --web-grey:#E8EAF0; --web-cond:"Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  min-height:0; background:var(--white); color:var(--text-primary)}
+.screen.is-web :focus-visible{outline-color:var(--ugc-electric-blue)}
+.screen.is-web .status,.screen.is-web .app-header,.screen.is-web .picker,.screen.is-web .pills,.screen.is-web .tabbar,.screen.is-web .app-note{display:none}
+.screen.is-web .browser{display:flex; align-items:center; gap:var(--space-4); padding:var(--space-2) var(--space-4); background:var(--web-grey); color:#4A5070; font:400 12px/16px var(--font)}
 .browser .dots{display:flex; gap:6px}
 .browser .dots i{width:10px; height:10px; border-radius:var(--radius-pill); background:#C9CEDC}
 .browser .url{flex:1; max-width:420px; padding:var(--space-1) var(--space-3); background:var(--white); border-radius:var(--radius-pill)}
-.screen.is-web .web-header{display:flex; align-items:center; gap:var(--space-6); height:72px; padding:0 var(--space-4); border-bottom:1px solid var(--app-line)}
-.web-nav{display:none; list-style:none; margin:0; padding:0; gap:var(--space-6); font:800 13px/20px var(--font); letter-spacing:.04em; text-transform:uppercase}
-.web-nav li{padding:var(--space-6) 0; border-bottom:3px solid transparent; white-space:nowrap}
-.web-nav li.on{color:var(--app-cyan); border-bottom-color:var(--app-cyan)}
-.web-tools{display:flex; align-items:center; gap:var(--space-2); margin-left:auto}
-.web-icon{display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border:0; border-radius:var(--radius-lg); background:var(--app-cyan); color:var(--app-ink); cursor:pointer}
-.web-icon .icon{stroke-width:2.5}
-.web-account{display:none; align-items:center; gap:var(--space-2); font:800 13px/20px var(--font); text-transform:uppercase; letter-spacing:.04em}
-.web-menu{display:inline-flex; width:44px; height:44px; align-items:center; justify-content:center}
-.screen.is-web .app{padding:var(--space-8) var(--space-4)}
-.screen.is-web .rail{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+
+/* En-tête : barre nuit (logo + accès) puis barre blanche des rubriques */
+.screen.is-web .web-header{display:block}
+.web-top{display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); height:64px; padding:0 var(--space-4); background:var(--ugc-navy); color:var(--white)}
+.web-top .logo-slot{height:36px}
+.web-tools{display:flex; align-items:center; gap:var(--space-1)}
+.web-tool{display:grid; justify-items:center; gap:2px; min-width:44px; min-height:44px; padding:var(--space-1) var(--space-2); border:0; background:none; color:var(--white);
+  font:600 11px/14px var(--web-cond); letter-spacing:.04em; text-transform:uppercase; cursor:default}
+.web-tool span{display:none}
+button.web-tool{cursor:pointer; border-radius:var(--radius-xs)}
+button.web-tool:hover{background:rgba(255,255,255,.12)}
+.web-nav{display:flex; gap:var(--space-6); margin:0; padding:0 var(--space-4); list-style:none; overflow-x:auto; scrollbar-width:none; background:var(--white); border-bottom:1px solid var(--border);
+  font:500 14px/20px var(--web-cond); letter-spacing:.03em; text-transform:uppercase; color:var(--ugc-navy)}
+.web-nav li{padding:var(--space-3) 0; border-bottom:3px solid transparent; white-space:nowrap}
+.web-nav li.on{color:var(--ugc-blue); border-bottom-color:var(--ugc-electric-blue); font-weight:600}
+
+/* Bandeau nuit façon carrousel d'accueil */
+.screen.is-web .web-hero{display:grid; grid-template-columns:minmax(0,1fr); align-items:center; gap:var(--space-6); padding:var(--space-8) var(--space-4) var(--space-16); background:var(--ugc-navy); color:var(--white)}
+.web-hero-k{font:600 13px/16px var(--web-cond); letter-spacing:.12em; text-transform:uppercase; color:var(--ugc-light-blue)}
+.web-hero-t{font:500 40px/44px var(--web-cond); text-transform:uppercase; margin-top:var(--space-2)}
+.web-hero-s{font:400 18px/24px var(--web-cond); color:#C9CEDC; margin-top:var(--space-2); max-width:36ch}
+.web-hero-posters{display:none; grid-template-columns:repeat(3,120px); gap:var(--space-4); justify-content:end}
+.web-hero-posters .poster{border-radius:0; box-shadow:0 12px 32px rgba(0,0,0,.35)}
+
+/* Contenu */
+.screen.is-web .app{padding:0 var(--space-4) var(--space-12); color:var(--text-primary)}
+.screen.is-web .search-view{gap:var(--space-12)}
+.screen.is-web .ask{position:relative; z-index:1; width:100%; max-width:800px; justify-self:center; margin-top:calc(-1 * var(--space-12)); padding:var(--space-6);
+  background:var(--white); border-radius:var(--radius-sm); box-shadow:0 2px 16px rgba(6,26,85,.14)}
+.screen.is-web .ask label{font:500 16px/20px var(--web-cond); text-transform:none; letter-spacing:.02em; color:var(--ugc-navy)}
+.screen.is-web .ask .hint{color:var(--text-secondary)}
+.screen.is-web textarea{background:var(--web-grey); color:var(--ugc-navy); border:2px solid var(--web-grey); border-radius:var(--radius-xs); min-height:72px}
+.screen.is-web textarea:focus{border-color:var(--ugc-electric-blue); box-shadow:var(--focus-ring)}
+.screen.is-web .examples-k,.screen.is-web .understood .k{font-family:var(--web-cond); color:var(--text-secondary)}
+.screen.is-web .chip{background:var(--web-grey); border-color:var(--web-grey); color:var(--ugc-navy); border-radius:var(--radius-xs); font:500 15px/20px var(--web-cond); letter-spacing:.02em}
+.screen.is-web .chip:hover{border-color:var(--ugc-navy); background:var(--web-grey)}
+.screen.is-web .btn{border-radius:var(--radius-xs); font:600 16px/20px var(--web-cond); letter-spacing:.06em; min-height:48px}
+.screen.is-web .btn-primary{background:var(--web-red); border-color:var(--web-red); color:var(--white)}
+.screen.is-web .btn-primary:hover{background:var(--web-red-dark); border-color:var(--web-red-dark)}
+.screen.is-web .btn-primary:active{background:#8C0025; border-color:#8C0025}
+.screen.is-web .btn-outline{color:var(--ugc-navy); border-color:var(--ugc-navy)}
+.screen.is-web .btn:disabled{background:var(--web-grey); border-color:var(--web-grey); color:var(--text-muted)}
+.screen.is-web .engine{color:var(--text-secondary)}
+.screen.is-web .engine-on .dot{background:var(--success)}
+.screen.is-web .understood .k .icon{color:var(--success)}
+.screen.is-web .badge{border-radius:var(--radius-xs); font:600 12px/16px var(--web-cond); letter-spacing:.06em}
+.screen.is-web .badge-tag{background:var(--ugc-navy); color:var(--white)}
+
+/* Titres de section façon « FILMS », « DERNIÈRES NEWS » */
+.screen.is-web .results-head,.screen.is-web .section-head h2{font:400 32px/36px var(--web-cond); text-transform:uppercase; color:var(--ugc-navy)}
+.screen.is-web .section-head{padding-bottom:var(--space-2); border-bottom:1px solid var(--border)}
+.screen.is-web .section-head span{color:var(--text-secondary)}
+
+/* Cartes séance */
+.screen.is-web .card{background:var(--white); border:1px solid var(--border); border-radius:var(--radius-xs)}
+.screen.is-web .poster{border-radius:0}
+.screen.is-web .card h3{font:600 22px/26px var(--web-cond); color:var(--ugc-navy)}
+.screen.is-web .meta{color:var(--ugc-navy); font-family:var(--web-cond); font-size:16px}
+.screen.is-web .meta i{background:var(--text-muted)}
+.screen.is-web .public{color:var(--text-secondary); font-family:var(--web-cond); font-size:15px}
+.screen.is-web .why{color:var(--text-primary)}
+.screen.is-web .why b{color:var(--ugc-navy)}
+.screen.is-web .cine-name{font:600 18px/22px var(--web-cond); color:var(--ugc-navy)}
+.screen.is-web .cine-sub{color:var(--text-secondary)}
+.screen.is-web .showtime{border:1px solid var(--border-strong); border-radius:var(--radius-xs); box-shadow:none; color:var(--ugc-navy)}
+.screen.is-web .time{font:600 34px/36px var(--web-cond)}
+.screen.is-web .st-tags{font-family:var(--web-cond); font-size:15px}
+.screen.is-web .st-tags .salle{color:var(--ugc-blue)}
+.screen.is-web .st-foot{border-top-color:var(--border); color:var(--text-secondary)}
+
+/* Affiches : grille, label centré en haut, titre condensé dessous */
+.screen.is-web .rail{grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:var(--space-8) var(--space-6)}
+.screen.is-web .rail li{padding-top:0}
+.screen.is-web .rail .poster{border-radius:0}
+.screen.is-web .rail .badge{top:0; left:50%; transform:translateX(-50%); font-size:11px; min-height:20px; padding:2px 6px}
+.screen.is-web .rail h3{font:500 16px/20px var(--web-cond); color:var(--ugc-navy); margin-top:var(--space-2)}
+.screen.is-web .rail p{color:var(--text-secondary)}
+.screen.is-web .empty{background:var(--surface-subtle); border-radius:var(--radius-xs)}
+
+/* Pied de page nuit */
+.screen.is-web .web-footer{display:grid; gap:var(--space-4); justify-items:center; padding:var(--space-8) var(--space-4); background:var(--ugc-navy); color:var(--white); text-align:center}
+.web-footer ul{display:flex; flex-wrap:wrap; justify-content:center; gap:var(--space-2) var(--space-6); margin:0; padding:0; list-style:none; font:600 13px/16px var(--web-cond); letter-spacing:.04em; text-transform:uppercase}
+.web-footer p{font:400 14px/20px var(--font); color:#C9CEDC}
+
 @media (min-width:840px){
-  .screen.is-web .web-header{padding:0 var(--space-8)}
-  .screen.is-web .web-account{display:inline-flex}
-  .screen.is-web .app{padding:var(--space-12) var(--space-8)}
-  .screen.is-web .search-view{gap:var(--space-12)}
-  .screen.is-web .ask{grid-template-columns:minmax(0,1fr) auto; column-gap:var(--space-4); max-width:960px}
+  .web-top{padding:0 var(--space-8)}
+  .web-tool span{display:block}
+  .web-nav{padding:0 var(--space-8); gap:var(--space-8)}
+  .screen.is-web .web-hero{grid-template-columns:minmax(0,1fr) auto; padding:var(--space-12) var(--space-8) var(--space-20)}
+  .web-hero-t{font-size:56px; line-height:60px}
+  .web-hero-posters{display:grid}
+  .screen.is-web .app{padding:0 var(--space-8) var(--space-16)}
+  .screen.is-web .ask{grid-template-columns:minmax(0,1fr) auto; column-gap:var(--space-4); padding:var(--space-6) var(--space-8)}
   .screen.is-web .ask>*{grid-column:1/-1}
-  .screen.is-web .ask label{font-size:40px; line-height:48px}
-  .screen.is-web .ask textarea{grid-column:1; grid-row:3; min-height:64px}
-  .screen.is-web .ask #go{grid-column:2; grid-row:3; align-self:start; min-height:64px}
+  .screen.is-web .ask textarea{grid-column:1; grid-row:3}
+  .screen.is-web .ask #go{grid-column:2; grid-row:3; align-self:stretch}
   .screen.is-web .results{grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:var(--space-6)}
   .screen.is-web .results>h2,.screen.is-web .results>.empty{grid-column:1/-1}
 }
-@media (min-width:1240px){
-  .screen.is-web .web-nav{display:flex}
-  .screen.is-web .web-menu{display:none}
-}
+
 /* Réservation sur le web : fenêtre modale (§25) */
 .book-dialog{display:grid; gap:var(--space-6)}
-.screen.is-web .book-view{position:fixed; inset:0; z-index:20; display:grid; justify-items:center; align-items:start; padding:var(--space-8) var(--space-4); overflow-y:auto; background:rgba(4,7,43,.72)}
+.screen.is-web .book-view{position:fixed; inset:0; z-index:20; display:grid; justify-items:center; align-items:start; padding:var(--space-8) var(--space-4); overflow-y:auto; background:rgba(6,26,85,.72)}
 .screen.is-web .book-view[hidden]{display:none}
-.screen.is-web .book-dialog{width:100%; max-width:640px; padding:var(--space-6) var(--space-4); background:var(--app-light); color:var(--app-ink); border-radius:var(--radius-lg); overflow:clip; box-shadow:var(--shadow-overlay)}
+.screen.is-web .book-dialog{width:100%; max-width:640px; padding:var(--space-6) var(--space-4); background:var(--background); color:var(--text-primary); border-radius:var(--radius-sm); overflow:clip; box-shadow:var(--shadow-overlay)}
+.screen.is-web .book-head{background:var(--ugc-navy)}
+.screen.is-web .book-head h2{font:500 26px/30px var(--web-cond)}
+.screen.is-web .book-sub{color:#C9CEDC; font-family:var(--web-cond); font-size:15px}
+.screen.is-web .close{background:transparent; border:1px solid rgba(255,255,255,.5); border-radius:var(--radius-xs)}
+.screen.is-web .close:hover{background:rgba(255,255,255,.12)}
+.screen.is-web .steps{border-bottom:1px solid var(--border)}
+.screen.is-web .steps li{font-family:var(--web-cond); font-weight:500; font-size:14px; color:var(--text-muted)}
+.screen.is-web .steps li b{font:600 24px/28px var(--web-cond)}
+.screen.is-web .steps li.done{color:var(--ugc-navy)}
+.screen.is-web .steps li[aria-current="step"]{color:var(--ugc-blue); border-bottom-color:var(--ugc-electric-blue)}
+.screen.is-web .back{color:var(--ugc-blue); font-family:var(--web-cond); font-size:15px; font-weight:600}
+.screen.is-web .step-title,.screen.is-web .qty-label{font:500 24px/28px var(--web-cond); color:var(--ugc-navy)}
+.screen.is-web .qty-label{font-size:18px; line-height:22px}
+.screen.is-web .panel-w{border:1px solid var(--border); border-radius:var(--radius-xs); box-shadow:none}
+.screen.is-web .screen-bar{border-bottom-color:var(--ugc-electric-blue); font-family:var(--web-cond)}
+.screen.is-web .seat{border-color:var(--ugc-navy); border-radius:var(--radius-xs); color:var(--ugc-navy)}
+.screen.is-web .seat[aria-pressed="true"],.screen.is-web .legend .seat.sel{background:var(--ugc-electric-blue); border-color:var(--ugc-electric-blue); color:var(--white)}
+.screen.is-web .seat:disabled,.screen.is-web .legend .seat.taken{background:var(--web-grey); border-color:var(--web-grey); color:var(--text-muted)}
 @media (min-width:768px){
   .screen.is-web .book-dialog{padding:var(--space-6) var(--space-8)}
   .screen.is-web .book-head,.screen.is-web .steps{margin-left:calc(-1 * var(--space-8)); margin-right:calc(-1 * var(--space-8))}
@@ -362,7 +458,7 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
   <symbol id="i-circle-user" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></symbol>
   <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
   <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
@@ -387,16 +483,23 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
       <div class="screen" id="screen">
         <div class="browser" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="url">Prototype · site web (démo)</span></div>
         <header class="web-header">
-          <span class="logo-slot" role="img" aria-label="Emplacement du logo UGC officiel">LOGO UGC</span>
-          <ul class="web-nav" aria-hidden="true">
-            <li>Films</li><li>Cinémas</li><li>Labels &amp; sélections</li><li>Événements</li><li>UGC Illimité</li><li class="on">Assistant</li>
-          </ul>
-          <div class="web-tools">
-            <button type="button" class="web-icon" id="webSearch" aria-label="Rechercher une séance avec l'assistant"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></button>
-            <span class="web-account" aria-hidden="true"><svg class="icon"><use href="#i-circle-user"/></svg><span>Mon compte</span></span>
-            <span class="web-menu" aria-hidden="true"><svg class="icon"><use href="#i-menu"/></svg></span>
+          <div class="web-top">
+            <span class="logo-slot" role="img" aria-label="Emplacement du logo UGC officiel">LOGO UGC</span>
+            <div class="web-tools">
+              <button type="button" class="web-tool" id="webSearch"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><span>Rechercher</span></button>
+              <span class="web-tool" aria-hidden="true"><svg class="icon"><use href="#i-circle-user"/></svg><span>Mon compte</span></span>
+              <span class="web-tool" aria-hidden="true"><svg class="icon"><use href="#i-ticket"/></svg><span>UGC Illimité</span></span>
+              <span class="web-tool" aria-hidden="true"><svg class="icon"><use href="#i-card"/></svg><span>Cartes &amp; offres</span></span>
+            </div>
           </div>
+          <ul class="web-nav" aria-hidden="true">
+            <li>Cinémas</li><li>Films</li><li>Labels &amp; sélections</li><li>En famille</li><li>Événements</li><li>News</li><li class="on">Assistant</li>
+          </ul>
         </header>
+        <div class="web-hero">
+          <div><p class="web-hero-k">Nouveau</p><p class="web-hero-t">L'assistant séance</p><p class="web-hero-s">Dites ce dont vous avez envie : l'assistant vous propose trois séances et vous mène jusqu'à la réservation.</p></div>
+          <div class="web-hero-posters" id="heroPosters" aria-hidden="true"></div>
+        </div>
         <div class="status" aria-hidden="true"><span>20:12</span><span>5G · 82 %</span></div>
         <header class="app-header">
           <span class="logo-slot" role="img" aria-label="Emplacement du logo UGC officiel">LOGO UGC</span>
@@ -435,6 +538,10 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
 
           <p class="app-note"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg><span>Démo : programme et cinémas fictifs, aucune réservation réelle. Prototype conceptuel non officiel – Caroline Camilleri.</span></p>
         </div>
+        <footer class="web-footer">
+          <ul aria-hidden="true"><li>Besoin d'aide&nbsp;?</li><li>Contact</li><li>Mentions légales</li><li>Cookies</li><li>Accessibilité</li></ul>
+          <p>Prototype conceptuel non officiel – Caroline Camilleri · Films, cinémas et séances fictifs, aucune réservation réelle.</p>
+        </footer>
         <!-- Barre d'onglets : seuls les onglets sont décoratifs ; le bouton recherche central est actif -->
         <div class="tabbar">
           <svg class="curve" viewBox="0 0 400 18" preserveAspectRatio="none" aria-hidden="true"><path d="M0 16 Q200 -12 400 16" fill="none" stroke="#0A9EF0" stroke-width="2"/></svg>
@@ -555,7 +662,7 @@ $("searchBtn").onclick=$("webSearch").onclick=()=>{ if(bk) closeBooking(true); e
 
 /* ---------- Canal affiché : application mobile ou site web ---------- */
 const isWeb = ()=>$("screen").classList.contains("is-web");
-const INERT = ()=>[...document.querySelectorAll(".page-head,.modes,.notecol,.web-header,.browser,#searchView,.app-note")];
+const INERT = ()=>[...document.querySelectorAll(".page-head,.modes,.notecol,.web-header,.web-hero,.web-footer,.browser,#searchView,.app-note")];
 function setMode(m){
   if(bk) closeBooking();
   const web=m==="web";
@@ -898,6 +1005,8 @@ Object.values(FILMS).forEach(f=>{
   li.querySelector("p").textContent=cap(f.g)+" · "+appD(f.d)+(AGE[f.r]?" · Interdit "+f.r:"");
   $("rail").append(li);
 });
+
+["orbite","lisbonne","osaka"].forEach(k=>{ const d=document.createElement("div"); d.className="poster"; paintPoster(d,FILMS[k]); $("heroPosters").append(d); });
 
 function run(){ const q=$("q").value.trim(); if(!q) return; render(localPick(q)); }
 $("askForm").addEventListener("submit",e=>{e.preventDefault(); run();});
