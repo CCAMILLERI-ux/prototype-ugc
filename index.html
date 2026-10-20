@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quel film ce soir ?</title>
+<meta name="description" content="Prototype conceptuel non officiel – Caroline Camilleri. Assistant de choix de séance dans l'univers UGC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<style>
+/* Tokens : UGC-DESIGN-SYSTEM.md §3, §5, §7, §28 */
+:root{
+  --ugc-navy:#061A55; --ugc-blue:#123B9B; --ugc-electric-blue:#1769E0; --ugc-light-blue:#35B9E9;
+  --white:#FFFFFF; --background:#F5F6F8; --surface:#FFFFFF; --surface-subtle:#F0F2F5;
+  --text-primary:#10131A; --text-secondary:#60646C; --text-muted:#858A94;
+  --border:#E2E5EA; --border-strong:#C7CBD2;
+  --cinema-black:#090B12;
+  --success:#18794E; --warning:#A15C00; --error:#C62828; --info:#1769E0;
+
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-6:24px; --space-8:32px; --space-12:48px; --space-16:64px;
+  --radius-xs:2px; --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-pill:999px;
+  --shadow-card:0 4px 16px rgba(0,0,0,.08);
+  --focus-ring:0 0 0 3px rgba(23,105,224,.25);
+  --duration-fast:120ms; --duration-normal:200ms;
+
+  --font:"Inter", Arial, Helvetica, sans-serif;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--background); color:var(--text-primary); font:400 16px/24px var(--font)}
+h1,h2,h3,p{margin:0}
+.icon{width:20px; height:20px; flex:none; fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round}
+.icon-sm{width:16px; height:16px}
+:focus-visible{outline:3px solid var(--ugc-electric-blue); outline-offset:2px}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+
+/* ---------- Page (grille §6, mobile first) ---------- */
+.wrap{max-width:1280px; margin:0 auto; padding:var(--space-8) var(--space-4) var(--space-12); display:grid; gap:var(--space-8)}
+.page-head{display:grid; gap:var(--space-3); max-width:760px}
+.eyebrow{font:600 12px/16px var(--font); letter-spacing:.08em; text-transform:uppercase; color:var(--ugc-blue)}
+h1{font:700 32px/40px var(--font)}
+.lede{color:var(--text-secondary)}
+.disclaimer{display:inline-flex; align-items:center; gap:var(--space-2); justify-self:start; min-height:32px; padding:var(--space-1) var(--space-3);
+  background:var(--surface); border:1px solid var(--border-strong); border-radius:var(--radius-sm); font:600 14px/20px var(--font); color:var(--text-primary)}
+.disclaimer .icon{color:var(--ugc-blue)}
+.layout{display:grid; grid-template-columns:minmax(0,1fr); gap:var(--space-8); align-items:start}
+
+/* ---------- Démo : téléphone ---------- */
+.device{width:100%; max-width:420px; justify-self:center}
+.screen{background:var(--background); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; display:flex; flex-direction:column}
+.status{display:none}
+
+/* Header §10 */
+.app-header{background:var(--ugc-navy); color:var(--white); height:64px; padding:0 var(--space-2) 0 var(--space-4); display:flex; align-items:center; justify-content:space-between; gap:var(--space-3)}
+.logo-slot{display:inline-flex; align-items:center; justify-content:center; height:32px; padding:0 var(--space-3);
+  border:1px dashed rgba(255,255,255,.6); border-radius:var(--radius-xs); font:600 12px/16px var(--font); letter-spacing:.04em; color:var(--white); white-space:nowrap}
+.app-title{font:600 14px/20px var(--font); color:var(--white); margin-right:auto}
+.icon-btn{display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; padding:0; border:0; border-radius:var(--radius-sm);
+  background:transparent; color:var(--white); cursor:pointer; transition:background var(--duration-fast)}
+.icon-btn:hover{background:rgba(255,255,255,.12)}
+
+/* Cinema selector §11 (affichage seul) */
+.cinema{display:flex; align-items:center; gap:var(--space-3); padding:var(--space-3) var(--space-4); background:var(--surface); border-bottom:1px solid var(--border)}
+.cinema .icon{color:var(--ugc-blue)}
+.cinema-k{font:600 12px/16px var(--font); color:var(--text-secondary)}
+.cinema-v{font:700 14px/20px var(--font)}
+
+.app{padding:var(--space-4); display:grid; gap:var(--space-6)}
+
+/* Formulaire §23 */
+.ask{display:grid; gap:var(--space-3)}
+.ask label{font:700 16px/22px var(--font)}
+.ask .hint{font:400 14px/20px var(--font); color:var(--text-secondary); margin-top:calc(-1 * var(--space-2))}
+textarea{width:100%; min-height:96px; resize:vertical; padding:var(--space-3) var(--space-4); background:var(--white); color:var(--text-primary);
+  border:1px solid var(--border-strong); border-radius:var(--radius-sm); font:400 16px/24px var(--font); transition:border-color var(--duration-fast)}
+textarea:focus{outline:none; border-color:var(--ugc-electric-blue); box-shadow:var(--focus-ring)}
+.examples-k{font:600 12px/16px var(--font); letter-spacing:.08em; text-transform:uppercase; color:var(--text-secondary)}
+.chips{display:flex; flex-wrap:wrap; gap:var(--space-2)}
+.chip{min-height:44px; padding:var(--space-2) var(--space-3); text-align:left; background:var(--surface); color:var(--ugc-blue);
+  border:1px solid var(--border-strong); border-radius:var(--radius-sm); font:400 14px/20px var(--font); cursor:pointer;
+  transition:border-color var(--duration-fast), background var(--duration-fast)}
+.chip:hover{border-color:var(--ugc-blue); background:var(--surface-subtle)}
+
+/* Boutons §15 */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2); height:48px; padding:0 var(--space-6);
+  border-radius:var(--radius-sm); font:700 14px/20px var(--font); letter-spacing:.04em; text-transform:uppercase; cursor:pointer;
+  transition:background var(--duration-fast), color var(--duration-fast), border-color var(--duration-fast)}
+.btn-primary{background:var(--ugc-blue); color:var(--white); border:1px solid var(--ugc-blue)}
+.btn-primary:hover{background:var(--ugc-navy); border-color:var(--ugc-navy)}
+.btn-primary:active{background:var(--cinema-black); border-color:var(--cinema-black)}
+.btn-secondary{background:var(--white); color:var(--ugc-blue); border:1px solid var(--ugc-blue)}
+.btn-secondary:hover{background:var(--surface-subtle)}
+.btn-secondary:active{background:var(--border)}
+.btn:disabled{background:var(--surface-subtle); color:var(--text-muted); border-color:var(--border); cursor:not-allowed}
+.btn-block{width:100%}
+
+.engine{display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--space-2); font:400 12px/16px var(--font); color:var(--text-secondary)}
+.engine-on{display:inline-flex; align-items:center; gap:var(--space-2)}
+.engine-on .dot{width:8px; height:8px; border-radius:var(--radius-pill); background:var(--success)}
+
+/* Étiquettes « Compris » — badge §19 */
+.understood{display:flex; flex-wrap:wrap; gap:var(--space-2); align-items:center}
+.understood:empty{display:none}
+.understood .k{display:inline-flex; align-items:center; gap:var(--space-1); font:600 12px/16px var(--font); letter-spacing:.08em; text-transform:uppercase; color:var(--text-secondary); margin-right:var(--space-1)}
+.understood .k .icon{color:var(--success)}
+.badge{display:inline-flex; align-items:center; min-height:24px; padding:var(--space-1) var(--space-2); border-radius:var(--radius-xs); font:600 12px/16px var(--font)}
+.badge-tag{background:var(--ugc-navy); color:var(--white)}
+.badge-version{background:var(--surface-subtle); color:var(--text-primary); border:1px solid var(--border-strong)}
+
+/* Résultats : MovieCard compacte §12 + séance §16 */
+.results{display:grid; gap:var(--space-4)}
+.results-head{font:700 20px/28px var(--font)}
+.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:var(--space-4); display:grid; gap:var(--space-4)}
+.card-top{display:grid; grid-template-columns:80px minmax(0,1fr); gap:var(--space-4)}
+.poster{aspect-ratio:2/3; border-radius:var(--radius-sm); display:flex; align-items:flex-end; padding:var(--space-2); font:700 32px/1 var(--font); color:rgba(255,255,255,.92); overflow:hidden}
+.card h3{font:700 16px/22px var(--font)}
+.meta{font:400 14px/20px var(--font); color:var(--text-secondary); margin-top:var(--space-1)}
+.why{font:400 14px/20px var(--font); margin-top:var(--space-2)}
+.why b{font-weight:600}
+.slot{display:grid; gap:var(--space-2); padding-top:var(--space-3); border-top:1px solid var(--border)}
+.slot-line{display:flex; align-items:center; gap:var(--space-2); flex-wrap:wrap}
+.time{font:700 20px/28px var(--font); font-variant-numeric:tabular-nums}
+.day{font:600 14px/20px var(--font); color:var(--text-secondary)}
+.place{display:flex; align-items:center; gap:var(--space-2); font:400 14px/20px var(--font); color:var(--text-secondary)}
+.place .icon{color:var(--text-secondary)}
+.seats-low{color:var(--warning); font-weight:600}
+
+/* Confirmation — récapitulatif §35 */
+.confirm{background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--success); border-radius:var(--radius-md); padding:var(--space-4); display:grid; gap:var(--space-4)}
+.confirm-head{display:flex; align-items:center; gap:var(--space-3)}
+.confirm-head .ok{display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:var(--radius-pill); background:var(--success); color:var(--white)}
+.confirm h3{font:700 20px/28px var(--font)}
+.confirm h3:focus{outline:none}
+.recap{display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--space-2) var(--space-4); margin:0; font:400 14px/20px var(--font)}
+.recap dt{color:var(--text-secondary)}
+.recap dd{margin:0; font-weight:600}
+.confirm p{font:400 14px/20px var(--font); color:var(--text-secondary)}
+
+/* États vides §26 */
+.empty{display:grid; gap:var(--space-3); padding:var(--space-4); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md)}
+.empty-line{display:flex; gap:var(--space-2); align-items:flex-start}
+.empty-line .icon{color:var(--warning); margin-top:2px}
+.empty .btn{justify-self:start}
+
+.app-note{display:flex; gap:var(--space-2); align-items:flex-start; font:400 12px/16px var(--font); color:var(--text-secondary); padding-top:var(--space-4); border-top:1px solid var(--border)}
+
+/* ---------- Note produit ---------- */
+.notecol{display:grid; gap:var(--space-4); min-width:0}
+.panel{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:var(--space-6) var(--space-4); display:grid; gap:var(--space-3)}
+.panel h2{font:700 20px/28px var(--font)}
+.panel .eyebrow{margin-bottom:calc(-1 * var(--space-1))}
+.panel p{max-width:66ch}
+.two{display:grid; grid-template-columns:minmax(0,1fr); gap:var(--space-4)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font:400 14px/20px var(--font)}
+th,td{text-align:left; padding:var(--space-2) var(--space-3); border-bottom:1px solid var(--border); vertical-align:top}
+th{font:600 12px/16px var(--font); letter-spacing:.08em; text-transform:uppercase; color:var(--text-secondary)}
+td.num{font-variant-numeric:tabular-nums; white-space:nowrap; font-weight:700; color:var(--ugc-blue)}
+ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
+.small{font:400 14px/20px var(--font); color:var(--text-secondary)}
+.page-foot{border-top:1px solid var(--border-strong); padding-top:var(--space-4); font:400 14px/20px var(--font); color:var(--text-secondary)}
+.page-foot strong{color:var(--text-primary); font-weight:600}
+
+/* Breakpoints §6 */
+@media (min-width:640px){
+  .two{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .panel{padding:var(--space-6)}
+}
+@media (min-width:768px){
+  .wrap{padding:var(--space-12) var(--space-6) var(--space-16)}
+  h1{font-size:40px; line-height:48px}
+  .device{background:var(--cinema-black); padding:var(--space-3); border-radius:var(--radius-lg); box-shadow:var(--shadow-card)}
+  .screen{border:0; border-radius:var(--radius-md); min-height:760px}
+  .status{display:flex; justify-content:space-between; padding:var(--space-2) var(--space-4); background:var(--ugc-navy); color:rgba(255,255,255,.8); font:600 12px/16px var(--font)}
+}
+@media (min-width:1024px){
+  .wrap{padding-left:var(--space-12); padding-right:var(--space-12)}
+  .layout{grid-template-columns:420px minmax(0,1fr); gap:var(--space-12)}
+  .device{position:sticky; top:var(--space-6)}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card,.confirm{animation:rise var(--duration-normal) ease-out both}
+  @keyframes rise{from{transform:translateY(6px)}to{transform:none}}
+}
+</style>
+</head>
+<body>
+
+<!-- Icônes Lucide (outline, §8) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+</svg>
+
+<div class="wrap">
+  <header class="page-head">
+    <p class="eyebrow">Prototype · IA dans le parcours de réservation</p>
+    <h1>Quel film ce soir&nbsp;?</h1>
+    <p class="lede">Le spectateur dit ce dont il a envie, l'assistant lui propose trois séances du programme et le mène jusqu'à la réservation. Essayez une demande dans l'application.</p>
+    <p class="disclaimer"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>Prototype conceptuel non officiel – Caroline Camilleri</p>
+  </header>
+
+  <div class="layout">
+    <!-- ---------- Application ---------- -->
+    <section class="device" aria-label="Application mobile, démonstration">
+      <div class="screen">
+        <div class="status" aria-hidden="true"><span>20:12</span><span>5G · 82 %</span></div>
+        <header class="app-header">
+          <span class="logo-slot" role="img" aria-label="Emplacement du logo UGC officiel">LOGO UGC</span>
+          <span class="app-title">Assistant séance</span>
+          <button class="icon-btn" type="button" id="searchBtn" aria-label="Rechercher une séance"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></button>
+        </header>
+        <div class="cinema">
+          <svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg>
+          <div><div class="cinema-k">Mes cinémas</div><div class="cinema-v">Paris · 3 cinémas fictifs</div></div>
+        </div>
+
+        <div class="app">
+          <form class="ask" id="askForm">
+            <label for="q">Dites-nous ce qui vous ferait plaisir</label>
+            <p class="hint" id="qHint">Envie, horaire, avec qui, version…</p>
+            <textarea id="q" rows="3" aria-describedby="qHint">Un film drôle ce soir après 20 h, avec mon ado de 13 ans</textarea>
+            <span class="examples-k" id="exK">Exemples</span>
+            <div class="chips" id="chips" role="group" aria-labelledby="exK"></div>
+            <button class="btn btn-primary btn-block" id="go" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Trouver ma séance</button>
+            <div class="engine"><span class="engine-on"><i class="dot" aria-hidden="true"></i>Moteur : règles locales</span><span>Programme fictif</span></div>
+          </form>
+
+          <div class="understood" id="understood"></div>
+          <div class="results" id="results" aria-live="polite"></div>
+
+          <p class="app-note"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg><span>Démo : programme et cinémas fictifs, aucune réservation réelle. Prototype conceptuel non officiel – Caroline Camilleri.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- Note produit ---------- -->
+    <div class="notecol">
+      <section class="panel">
+        <p class="eyebrow">Note produit</p>
+        <h2>Le problème</h2>
+        <p>Pour choisir une séance, le spectateur croise le film, l'horaire, le cinéma, la version et l'âge de ceux qui l'accompagnent. Cela demande plusieurs allers-retours entre les écrans avant de réserver, et une partie abandonne en chemin.</p>
+        <p><strong>Hypothèse :</strong> une demande formulée en langage naturel raccourcit le temps de choix et augmente le passage à la réservation, sans remplacer la recherche classique.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Objectifs fixés avant la mise en ligne</h2>
+        <div class="tbl"><table>
+          <thead><tr><th scope="col">Indicateur</th><th scope="col">Cible d'exemple</th><th scope="col">Mesure</th></tr></thead>
+          <tbody>
+            <tr><td>Passage de la recherche à la réservation</td><td class="num">+10 %</td><td>Tunnel comparé avec et sans assistant</td></tr>
+            <tr><td>Temps médian jusqu'au choix d'une séance</td><td class="num">−30 %</td><td>Événements de parcours</td></tr>
+            <tr><td>Réservations passées via l'assistant</td><td class="num">15 %</td><td>Part du total sur l'app</td></tr>
+            <tr><td>Demandes sans proposition utile</td><td class="num">&lt; 10 %</td><td>Clic « Autre chose » ou abandon</td></tr>
+          </tbody>
+        </table></div>
+        <p class="small">Cibles indicatives, à caler avec la Web Analyst sur les chiffres actuels du tunnel avant de lancer le test A/B.</p>
+      </section>
+
+      <div class="two">
+        <section class="panel">
+          <h2>Test utilisateurs</h2>
+          <ul class="clean">
+            <li>5 spectateurs, 3 scénarios : sortie en famille, soirée en VO, envie de dernière minute.</li>
+            <li>On observe le temps de choix, les reformulations et la confiance dans les propositions.</li>
+            <li>Arbitrage : ce qui ne sert pas la réservation sort du périmètre.</li>
+          </ul>
+        </section>
+        <section class="panel">
+          <h2>À cadrer avec la DSI</h2>
+          <ul class="clean">
+            <li>Programme et places en temps réel via l'API billetterie.</li>
+            <li>Garde-fou : l'IA ne peut proposer qu'une séance qui existe, vérifiée côté code.</li>
+            <li>Coût par requête, temps de réponse, données personnelles.</li>
+            <li>Repli automatique sur la recherche classique si l'IA ne répond pas.</li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="panel">
+        <h2>Comment fonctionne la démo</h2>
+        <p>La demande est interprétée par un moteur de règles local, exécuté dans le navigateur : il repère l'envie, le jour, l'horaire, la version, le public et le cinéma, puis classe les séances du programme fictif. Aucune donnée n'est envoyée à un service externe. En production, ce moteur servirait de repli si le modèle d'IA ne répond pas.</p>
+      </section>
+
+      <footer class="page-foot"><strong>Prototype conceptuel non officiel – Caroline Camilleri.</strong> Interface inspirée de l'univers digital public d'UGC, sans lien avec le Groupe UGC. Les emplacements de logo attendent les assets officiels. Films, cinémas et séances sont fictifs.</footer>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+const FILMS = {
+  voisins:{t:"Les Voisins du 3e", g:"comédie", d:102, r:"Tous publics", c:["#E0663A","#7A2A52"], s:"Une colocation improbable entre un retraité grincheux et deux étudiants."},
+  lisbonne:{t:"Plan B à Lisbonne", g:"comédie romantique", d:115, r:"Tous publics", c:["#E8A33C","#B23A5A"], s:"Deux inconnus bloqués à Lisbonne par une grève des avions."},
+  fuite:{t:"Ligne de fuite", g:"thriller", d:128, r:"-12 ans", c:["#2F4A6E","#0F1626"], s:"Une contrôleuse aérienne découvre un vol qui n'existe pas."},
+  orbite:{t:"Orbite basse", g:"science-fiction", d:141, r:"Tous publics", c:["#3640A8","#0B0D2A"], s:"Une mission de réparation en orbite tourne au huis clos."},
+  hiver:{t:"Le Dernier Hiver", g:"drame", d:118, r:"Tous publics", c:["#7D8FA3","#2D3440"], s:"Trois générations réunies dans une ferme du Jura."},
+  pipo:{t:"Pipo et la Forêt bleue", g:"animation", d:84, r:"Tous publics", c:["#2E9E8F","#174A6B"], s:"Un petit renard part à la recherche des lucioles disparues."},
+  osaka:{t:"Nuit blanche à Osaka", g:"action", d:110, r:"-12 ans", c:["#D2414B","#2A0F1A"], s:"Une coursière doit traverser la ville avant l'aube."},
+  maison:{t:"La Maison du bout", g:"horreur", d:99, r:"-16 ans", c:["#4A3B3B","#100A0A"], s:"Une maison de vacances dont personne ne revient tout à fait."},
+  rock:{t:"Mes années rock", g:"documentaire musical", d:96, r:"Tous publics", c:["#C78B2B","#3A2A12"], s:"Les salles de concert françaises racontées par ceux qui y ont joué."},
+  selle:{t:"Tous en selle !", g:"comédie familiale", d:91, r:"Tous publics", c:["#6BAF4B","#2A5A2E"], s:"Une famille traverse la France à vélo, sans GPS."}
+};
+/* Cinémas fictifs : le dernier mot sert de mot-clé au moteur */
+const CINES = ["Ciné Démo Bercy","Ciné Démo Odéon","Ciné Démo Gobelins"];
+const PLAN = [
+ ["voisins",0,"tonight","18:10","VF"],["voisins",0,"tonight","20:30","VF"],["voisins",2,"tonight","21:15","VF"],["voisins",1,"sat","14:00","VF"],
+ ["lisbonne",1,"tonight","19:40","VF"],["lisbonne",1,"tonight","22:00","VO"],["lisbonne",0,"sat","17:30","VF"],
+ ["fuite",0,"tonight","20:45","VF"],["fuite",1,"tonight","21:30","VO"],["fuite",2,"sat","22:10","VO"],
+ ["orbite",0,"tonight","19:00","VO"],["orbite",2,"tonight","20:15","VF"],["orbite",0,"sat","15:45","VF"],
+ ["hiver",1,"tonight","18:30","VO"],["hiver",1,"sat","11:00","VO"],
+ ["pipo",2,"tonight","17:20","VF"],["pipo",0,"sat","10:15","VF"],["pipo",2,"sat","11:30","VF"],
+ ["osaka",0,"tonight","22:15","VO"],["osaka",2,"tonight","20:50","VF"],
+ ["maison",1,"tonight","22:30","VF"],["maison",0,"sat","21:45","VO"],
+ ["rock",1,"tonight","20:00","VO"],
+ ["selle",2,"tonight","19:20","VF"],["selle",0,"sat","10:45","VF"],["selle",1,"sat","16:00","VF"]
+];
+const SEANCES = PLAN.map((p,i)=>({id:"S"+(i+1), film:p[0], cine:CINES[p[1]], day:p[2], time:p[3], v:p[4], seats:[12,34,7,58,21,4,40,16][i%8]}));
+const DAY = {tonight:"Ce soir", sat:"Demain (samedi)"};
+const VERSION = {VF:"Version française", VO:"Version originale sous-titrée"};
+const byId = Object.fromEntries(SEANCES.map(s=>[s.id,s]));
+const mins = t=>{const [h,m]=t.split(":").map(Number); return h*60+m};
+const fmtD = d=>Math.floor(d/60)+" h "+String(d%60).padStart(2,"0");
+const icon = (id,cls)=>'<svg class="icon'+(cls?" "+cls:"")+'" aria-hidden="true"><use href="#i-'+id+'"/></svg>';
+
+const EXAMPLES = ["Un film drôle ce soir après 20 h, avec mon ado de 13 ans","Quelque chose d'intense en VO, ce soir vers Bercy","Samedi matin avec deux enfants de 6 et 8 ans","Pas trop long, je sors du bureau à 19 h"];
+const $ = id=>document.getElementById(id);
+const chips=$("chips");
+EXAMPLES.forEach(e=>{const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=e; b.onclick=()=>{$("q").value=e; run();}; chips.append(b);});
+$("searchBtn").onclick=()=>$("q").focus();
+
+/* ---------- Moteur de règles local ---------- */
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
+function localPick(q){
+  const n=norm(q); const und=[]; const want={};
+  const G=[[/drol|rire|marrant|comed|leger/,["comédie","comédie romantique","comédie familiale"],"Comédie"],[/intense|suspense|thriller|frisson/,["thriller","action"],"Intense"],[/peur|horreur|flipp/,["horreur"],"Horreur"],[/science|espace|sf\b/,["science-fiction"],"Science-fiction"],[/romant|amoureu|couple|date/,["comédie romantique","drame"],"Romantique"],[/emouv|drame|pleur/,["drame"],"Émouvant"],[/musique|concert|rock|docu/,["documentaire musical"],"Musique"],[/action|bagarre/,["action"],"Action"]];
+  for(const [re,gs,l] of G){ if(re.test(n)){want.genres=(want.genres||[]).concat(gs); und.push(l);} }
+  if(/samedi|demain/.test(n)){want.day="sat"; und.push("Samedi");} else {want.day="tonight"; und.push("Ce soir");}
+  let m=n.match(/(?:apres|a partir de|des)\s*(\d{1,2})\s*h\s*(\d{2})?/); if(m){want.after=+m[1]*60+(+(m[2]||0)); und.push("Après "+m[1]+" h"+(m[2]||""));}
+  m=n.match(/vers\s*(\d{1,2})\s*h/); if(m){want.around=+m[1]*60; und.push("Vers "+m[1]+" h");}
+  m=n.match(/(?:sors|sortie|libre|fini).*?(\d{1,2})\s*h/); if(m&&!want.after){want.after=+m[1]*60+30; und.push("À partir de "+m[1]+" h 30");}
+  if(/matin/.test(n)){want.before=12*60; und.push("Le matin");}
+  if(/enfant|petit|famille|\b[3-9] ans/.test(n)){want.kids=true; want.genres=(want.genres||[]).concat(["animation","comédie familiale"]); und.push("Avec des enfants");}
+  else if(/ado|\b1[0-5] ans/.test(n)){want.teen=true; und.push("Avec un ado");}
+  if(/\bvo\b|version originale|anglais/.test(n)){want.v="VO"; und.push("VO");}
+  if(/\bvf\b/.test(n)){want.v="VF"; und.push("VF");}
+  if(/pas trop long|court|rapide/.test(n)){want.short=true; und.push("Moins de 1 h 45");}
+  CINES.forEach(c=>{const k=norm(c.split(" ").pop()); if(n.includes(k)){want.cine=c; und.push(c);}});
+  const scored=SEANCES.map(s=>{const f=FILMS[s.film]; let sc=0; const why=[];
+    if(s.day!==want.day) return null;
+    const t=mins(s.time);
+    if(want.after && t<want.after) return null;
+    if(want.before && t>=want.before) return null;
+    if(want.kids && (f.r!=="Tous publics" || !["animation","comédie familiale","comédie"].includes(f.g))) return null;
+    if(want.teen && f.r==="-16 ans") return null;
+    if(want.genres){ if(want.genres.includes(f.g)){sc+=5; why.push(f.g.charAt(0).toUpperCase()+f.g.slice(1));} else sc-=2; }
+    if(want.kids && ["animation","comédie familiale"].includes(f.g)){sc+=3;}
+    if(want.teen && f.r!=="Tous publics"){why.push("accessible dès 12 ans");}
+    if(want.v){ if(s.v===want.v){sc+=2; why.push("en "+s.v);} else sc-=3; }
+    if(want.cine){ if(s.cine===want.cine){sc+=3; why.push("à "+s.cine);} else sc-=1; }
+    if(want.around){ sc+=Math.max(0,3-Math.abs(t-want.around)/30); }
+    if(want.short){ if(f.d<=105){sc+=3; why.push("seulement "+fmtD(f.d));} else sc-=3; }
+    if(want.after){ why.push("commence à "+s.time.replace(":"," h ")); sc+=Math.max(0,2-(t-want.after)/60); }
+    sc+=s.seats>10?0.5:0;
+    return {s,sc,why};
+  }).filter(Boolean).sort((a,b)=>b.sc-a.sc);
+  const out=[]; const seen=new Set();
+  for(const x of scored){ if(seen.has(x.s.film)) continue; seen.add(x.s.film); out.push({id:x.s.id, why:(x.why.length?x.why.join(", "):"Bonne séance disponible au créneau demandé")+"."}); if(out.length===3) break; }
+  return {understood:und, picks:out};
+}
+
+/* ---------- Rendu ---------- */
+function render(res){
+  const u=$("understood"); u.innerHTML="";
+  if(res.understood.length){
+    const k=document.createElement("span"); k.className="k"; k.innerHTML=icon("check","icon-sm")+"Compris"; u.append(k);
+    res.understood.forEach(t=>{const s=document.createElement("span"); s.className="badge badge-tag"; s.textContent=t; u.append(s);});
+  }
+  const box=$("results"); box.innerHTML="";
+  if(!res.picks.length){
+    const e=document.createElement("div"); e.className="empty";
+    e.innerHTML='<p class="empty-line">'+icon("alert")+'<span>Aucune séance ne correspond exactement. Essayez un autre horaire ou un autre jour.</span></p><button type="button" class="btn btn-secondary">Modifier ma demande</button>';
+    e.querySelector("button").onclick=()=>$("q").focus();
+    box.append(e); return;
+  }
+  const h=document.createElement("h2"); h.className="results-head"; h.textContent="3 séances pour vous"; if(res.picks.length<3) h.textContent=res.picks.length+(res.picks.length>1?" séances pour vous":" séance pour vous"); box.append(h);
+  res.picks.forEach((p,i)=>{
+    const s=byId[p.id], f=FILMS[s.film];
+    const c=document.createElement("article"); c.className="card"; c.style.animationDelay=(i*60)+"ms";
+    c.innerHTML='<div class="card-top"><div class="poster" aria-hidden="true"></div><div><h3></h3><p class="meta"></p><p class="why"><b>Pourquoi&nbsp;:</b> <span></span></p></div></div>'+
+      '<div class="slot"><div class="slot-line"><span class="time"></span><span class="badge badge-version"></span><span class="day"></span></div>'+
+      '<p class="place">'+icon("map-pin","icon-sm")+'<span class="cine"></span></p>'+
+      '<button class="btn btn-primary btn-block book" type="button">'+icon("ticket")+'Réserver</button></div>';
+    const po=c.querySelector(".poster"); po.style.background="linear-gradient(160deg,"+f.c[0]+","+f.c[1]+")";
+    po.textContent=f.t.split(/[\s']+/).filter(w=>!/^(les|le|la|du|de|et|à|l|mes|en|plan)$/i.test(w))[0].slice(0,1).toUpperCase();
+    c.querySelector("h3").textContent=f.t;
+    c.querySelector(".meta").textContent=f.g.charAt(0).toUpperCase()+f.g.slice(1)+" · "+fmtD(f.d)+" · "+f.r;
+    c.querySelector(".why span").textContent=p.why;
+    c.querySelector(".time").textContent=s.time.replace(":"," h ");
+    const vb=c.querySelector(".badge-version"); vb.textContent=s.v; vb.title=VERSION[s.v];
+    c.querySelector(".day").textContent=DAY[s.day];
+    const cine=c.querySelector(".cine"); cine.textContent=s.cine+" · ";
+    const seats=document.createElement("span"); seats.textContent=s.seats<10?"plus que "+s.seats+" places":s.seats+" places";
+    if(s.seats<10) seats.className="seats-low"; cine.append(seats);
+    const book=c.querySelector(".book"); book.setAttribute("aria-label","Réserver "+f.t+", "+DAY[s.day].toLowerCase()+" à "+s.time.replace(":"," h ")+", "+s.cine);
+    book.onclick=()=>confirmSheet(s,c,book);
+    box.append(c);
+  });
+}
+function confirmSheet(s,card,trigger){
+  const f=FILMS[s.film]; const sh=document.createElement("section"); sh.className="confirm";
+  sh.innerHTML='<div class="confirm-head"><span class="ok">'+icon("check","icon-sm")+'</span><h3 tabindex="-1">Séance sélectionnée</h3></div>'+
+    '<dl class="recap"><dt>Film</dt><dd class="r-film"></dd><dt>Cinéma</dt><dd class="r-cine"></dd><dt>Date</dt><dd class="r-day"></dd><dt>Heure</dt><dd class="r-time"></dd><dt>Version</dt><dd class="r-v"></dd></dl>'+
+    '<p>Étape suivante du vrai parcours : choix des places et paiement. Ici, la démo s\'arrête.</p>'+
+    '<button type="button" class="btn btn-secondary">'+icon("arrow-left")+'Revenir aux propositions</button>';
+  sh.querySelector(".r-film").textContent=f.t;
+  sh.querySelector(".r-cine").textContent=s.cine;
+  sh.querySelector(".r-day").textContent=DAY[s.day];
+  sh.querySelector(".r-time").textContent=s.time.replace(":"," h ");
+  sh.querySelector(".r-v").textContent=VERSION[s.v]+" ("+s.v+")";
+  sh.querySelector("button").onclick=()=>{sh.replaceWith(card); trigger.focus();};
+  card.replaceWith(sh);
+  sh.querySelector("h3").focus();
+}
+
+function run(){ const q=$("q").value.trim(); if(!q) return; render(localPick(q)); }
+$("askForm").addEventListener("submit",e=>{e.preventDefault(); run();});
+$("q").addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){e.preventDefault(); run();} });
+render(localPick($("q").value));
+})();
+</script>
+</body>
+</html>
