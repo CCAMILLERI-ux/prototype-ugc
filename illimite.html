@@ -364,6 +364,17 @@ button,input,select{font:inherit}
 .about{background:var(--background); border-top:1px solid var(--border); padding:var(--space-12) 0}
 .about .wrap{display:grid; gap:var(--space-6)}
 .about h2{font:700 24px/32px var(--font)}
+.about-k{font:600 12px/16px var(--font); letter-spacing:.08em; text-transform:uppercase; color:var(--ugc-blue); margin-bottom:var(--space-2)}
+.about .why{border-left:4px solid var(--ugc-blue); display:grid; gap:var(--space-3)}
+.about .why p{color:var(--text-primary)}
+.imp-grid{display:grid; gap:var(--space-4); margin-top:var(--space-2)}
+.imp{position:relative; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:var(--space-6) var(--space-6) var(--space-6) 64px}
+.imp-n{position:absolute; left:var(--space-6); top:var(--space-6); display:grid; place-items:center; width:28px; height:28px; border-radius:var(--radius-pill); background:var(--ugc-blue); color:var(--white); font:700 14px/1 var(--font)}
+.imp h4{font:700 17px/24px var(--font); margin:0 0 var(--space-3)}
+.imp dl{display:grid; gap:var(--space-1); margin:0; font:400 14px/20px var(--font)}
+.imp dt{font-weight:700; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-secondary); margin-top:var(--space-2)}
+.imp dt:first-child{margin-top:0}
+.imp dd{margin:0}
 .about h3{font:700 18px/24px var(--font); margin-bottom:var(--space-2)}
 .about .cols{display:grid; gap:var(--space-4)}
 .about section{background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:var(--space-6)}
@@ -397,6 +408,7 @@ button,input,select{font:inherit}
   .summary summary{cursor:default; pointer-events:none}
   .summary .chev{display:none}
   .about .cols{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .imp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .next{grid-template-columns:1fr auto; align-items:center}
 }
 @media (min-width:1100px){ .grid{grid-template-columns:repeat(4,minmax(0,1fr))} }
@@ -440,11 +452,11 @@ button,input,select{font:inherit}
 <!-- Bandeau portfolio : hors du site simulé -->
 <div class="folio">
   <div class="wrap">
-    <span><b>Prototype de candidature — non officiel</b> · Caroline Camilleri</span>
+    <span><b>Prototype de candidature — non officiel</b> · un concept pour illustrer une démarche produit, pas une copie du site actuel · Caroline Camilleri</span>
     <nav aria-label="Projets du portfolio">
       <a href="index.html">Projet 1 · Assistant « Quel film ce soir ? »</a>
       <a href="illimite.html" aria-current="page">Projet 2 · Souscription UGC Illimité</a>
-      <a href="#about">Note produit</a>
+      <a href="#about">Lire la note produit</a>
     </nav>
   </div>
 </div>
@@ -482,36 +494,76 @@ button,input,select{font:inherit}
 <!-- ---------- Note de candidature ---------- -->
 <section class="about" id="about" aria-labelledby="aboutH">
   <div class="wrap">
-    <h2 id="aboutH">Note produit · Souscription UGC Illimité</h2>
-    <p><strong>Objectif :</strong> faciliter le passage du choix d'un abonnement à sa première utilisation, avec un parcours clair et rassurant sur ordinateur et sur mobile. Les améliorations ci-dessous sont des <strong>hypothèses à tester</strong>, pas un constat sur le site actuel.</p>
+    <div>
+      <p class="about-k">Note produit · Caroline Camilleri, candidature Digital Product Manager</p>
+      <h2 id="aboutH">Souscription UGC Illimité : du choix de l'offre à la première séance</h2>
+    </div>
+
+    <section class="why" aria-labelledby="whyH">
+      <h3 id="whyH">Pourquoi ce prototype&nbsp;?</h3>
+      <p>Ce prototype <strong>n'a pas vocation à imiter ni à remplacer le site ugc.fr</strong>. Il reprend ses codes visuels pour que les propositions se lisent dans un contexte familier, mais son objet est ailleurs : montrer comment je passe d'une intuition produit à un parcours testable, en cadrant le problème, en formulant des hypothèses, en maquettant un parcours interactif et en définissant comment mesurer le résultat.</p>
+      <p>Les améliorations ci-dessous sont des <strong>hypothèses à valider</strong> avec les équipes et les utilisateurs. Elles ne constituent pas un diagnostic du site actuel, dont je ne connais ni les données d'usage ni les contraintes techniques.</p>
+    </section>
+
+    <section aria-labelledby="goalH">
+      <h3 id="goalH">Objectif</h3>
+      <p>Faciliter le passage du choix d'un abonnement à sa première utilisation, avec un parcours clair et rassurant sur ordinateur et sur mobile : moins d'abandons pendant la souscription, moins de questions au service client, et une première séance réservée plus vite.</p>
+    </section>
+
+    <section aria-labelledby="impH">
+      <h3 id="impH">Synthèse des améliorations proposées</h3>
+      <div class="imp-grid">
+        <article class="imp"><span class="imp-n">1</span><h4>L'offre choisie reste visible et modifiable</h4>
+          <dl><dt>Constat supposé</dt><dd>Au moment de payer, l'abonné n'a plus sous les yeux ce qu'il a choisi et revient en arrière pour vérifier.</dd>
+          <dt>Proposition</dt><dd>Récapitulatif de l'offre affiché à chaque étape, avec « Changer d'offre » sans perdre la saisie.</dd>
+          <dt>Indicateur</dt><dd>Retours vers la page des offres ; abandons à l'étape paiement.</dd></dl></article>
+        <article class="imp"><span class="imp-n">2</span><h4>Progression claire, retour sans perte</h4>
+          <dl><dt>Constat supposé</dt><dd>Un parcours en plusieurs étapes inquiète quand on ne sait pas combien il en reste, et décourage si un retour efface la saisie.</dd>
+          <dt>Proposition</dt><dd>Indicateur « Étape X sur 6 », retour à l'étape précédente et saisie conservée, même après un rechargement de la page.</dd>
+          <dt>Indicateur</dt><dd>Taux d'abandon par étape ; reprises de parcours.</dd></dl></article>
+        <article class="imp"><span class="imp-n">3</span><h4>Documents expliqués avant le téléversement</h4>
+          <dl><dt>Constat supposé</dt><dd>Découvrir en cours de route qu'il faut une photo ou un justificatif fait abandonner, surtout sur mobile.</dd>
+          <dt>Proposition</dt><dd>Liste des documents selon la formule, avec le format attendu et la raison, affichée avant le téléversement.</dd>
+          <dt>Indicateur</dt><dd>Abandons à l'étape documents ; contacts au service client sur ce sujet.</dd></dl></article>
+        <article class="imp"><span class="imp-n">4</span><h4>Photo vérifiée tout de suite</h4>
+          <dl><dt>Constat supposé</dt><dd>Une photo refusée après coup retarde l'activation de la carte et génère des échanges.</dd>
+          <dt>Proposition</dt><dd>Aperçu immédiat, contrôle du format, du poids et de la taille, et un message qui dit quoi faire.</dd>
+          <dt>Indicateur</dt><dd>Photos rejetées après souscription ; délai d'activation de la carte.</dd></dl></article>
+        <article class="imp"><span class="imp-n">5</span><h4>Récapitulatif financier sans ambiguïté</h4>
+          <dl><dt>Constat supposé</dt><dd>Mélanger promotion, frais d'adhésion, mensualités et engagement crée des doutes au paiement et des réclamations ensuite.</dd>
+          <dt>Proposition</dt><dd>Trois blocs (à payer aujourd'hui, puis chaque mois, engagement jusqu'au…), le détail des remises et le total sur la durée d'engagement.</dd>
+          <dt>Indicateur</dt><dd>Conversion à l'étape paiement ; contacts « facturation » ; résiliations dans les premiers mois.</dd></dl></article>
+        <article class="imp"><span class="imp-n">6</span><h4>Une confirmation qui mène à la première séance</h4>
+          <dl><dt>Constat supposé</dt><dd>Après le paiement, l'abonné ne sait pas toujours comment utiliser sa carte tout de suite.</dd>
+          <dt>Proposition</dt><dd>Carte dématérialisée affichée immédiatement, action principale « Réserver une séance », et une frise de la suite (carte physique, premier prélèvement, fin d'engagement).</dd>
+          <dt>Indicateur</dt><dd>Délai entre souscription et première séance ; part des nouveaux abonnés ayant réservé dans les 7 jours.</dd></dl></article>
+      </div>
+    </section>
+
     <div class="cols">
-      <section>
-        <h3>Hypothèses illustrées</h3>
+      <section aria-labelledby="prioH">
+        <h3 id="prioH">Priorisation proposée</h3>
         <ul>
-          <li>L'offre choisie reste visible et modifiable à chaque étape.</li>
-          <li>Indicateur de progression et retour arrière sans perte de saisie.</li>
-          <li>Les documents nécessaires sont expliqués avant le téléversement.</li>
-          <li>Aperçu de la photo et messages d'erreur compréhensibles.</li>
-          <li>Récapitulatif qui sépare paiement du jour, mensualités et engagement.</li>
-          <li>Confirmation qui indique la prochaine action pour utiliser la carte.</li>
+          <li><strong>Gains rapides</strong> (surtout du contenu et de l'interface) : récapitulatif financier (5), documents expliqués (3), confirmation orientée action (6).</li>
+          <li><strong>Chantiers plus lourds</strong> (travail avec la DSI) : saisie conservée entre les étapes (2), contrôle automatique de la photo (4), offre modifiable pendant le parcours (1).</li>
         </ul>
       </section>
-      <section>
-        <h3>À mesurer</h3>
+      <section aria-labelledby="nextH">
+        <h3 id="nextH">Prochaines étapes</h3>
         <ul>
-          <li>Taux de passage choix d'offre → paiement, par étape.</li>
-          <li>Abandons et erreurs à l'étape photo et justificatifs.</li>
-          <li>Délai entre souscription et première séance réservée.</li>
-          <li>Contacts au service client liés à la souscription.</li>
+          <li>Partir des données réelles du tunnel pour confirmer où se situent les abandons.</li>
+          <li>Tester ce prototype avec 5 ou 6 futurs abonnés, sur mobile en priorité.</li>
+          <li>Cadrer avec la DSI : contrôle des photos et justificatifs, données personnelles (RGPD), prélèvement SEPA, carte dématérialisée.</li>
+          <li>Déployer par lots et mesurer chaque amélioration (test A/B quand c'est possible).</li>
         </ul>
       </section>
-      <section>
-        <h3>Sources et données</h3>
+      <section aria-labelledby="srcH">
+        <h3 id="srcH">Sources et données</h3>
         <ul>
           <li>Offres, tarifs, engagements et promotion : relevés sur des captures de ugc.fr (20/10/2026).</li>
           <li>Marqués <span class="demo">Démo</span> : frais d'adhésion, règles de photo et de justificatifs, date de prélèvement.</li>
-          <li>Non vérifiable depuis l'environnement de travail : feuilles de style de ugc.fr (police remplacée par Barlow Condensed), logo et visuels de carte officiels (emplacements à la place).</li>
-          <li>Toutes ces valeurs sont regroupées dans l'objet <code>CONFIG</code> en tête du script.</li>
+          <li>Logo et visuels de carte officiels non utilisés (emplacements à la place) ; police remplacée par Barlow Condensed.</li>
+          <li>Paiement et souscription simulés : aucune donnée n'est transmise. Les valeurs métier sont regroupées dans l'objet <code>CONFIG</code> du script.</li>
         </ul>
       </section>
     </div>
