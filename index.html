@@ -47,6 +47,10 @@ h1{font:700 32px/40px var(--font)}
   background:var(--surface); border:1px solid var(--border-strong); border-radius:var(--radius-sm); font:600 14px/20px var(--font); color:var(--text-primary)}
 .disclaimer .icon{color:var(--ugc-blue)}
 .layout{display:grid; grid-template-columns:minmax(0,1fr); gap:var(--space-8); align-items:start}
+.folio{display:flex; flex-wrap:wrap; gap:var(--space-2) var(--space-6); padding-bottom:var(--space-3); border-bottom:1px solid var(--border); font:600 14px/20px var(--font)}
+.folio a{color:var(--ugc-blue); text-decoration:none}
+.folio a:hover{text-decoration:underline}
+.folio a[aria-current="page"]{color:var(--text-primary); cursor:default; text-decoration:none}
 
 /* ---------- Démo : téléphone ----------
    Habillage relevé sur les captures de l'app mobile UGC (fond nuit, pilules, bleu cyan,
@@ -465,6 +469,10 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
 </svg>
 
 <div class="wrap">
+  <nav class="folio" aria-label="Projets du portfolio">
+    <a href="index.html" aria-current="page">Projet 1 · Assistant « Quel film ce soir ? »</a>
+    <a href="illimite.html">Projet 2 · Souscription UGC Illimité</a>
+  </nav>
   <header class="page-head">
     <p class="eyebrow">Prototype · IA dans le parcours de réservation</p>
     <h1>Quel film ce soir&nbsp;?</h1>
