@@ -132,6 +132,12 @@ textarea:focus{outline:none; border-color:var(--app-cyan)}
 .card-top{display:grid; grid-template-columns:104px minmax(0,1fr); gap:var(--space-4)}
 .poster{position:relative; aspect-ratio:2/3; border-radius:var(--radius-md); overflow:hidden; background:var(--cinema-black)}
 .poster svg{display:block; width:100%; height:100%}
+.poster.is-photo{container-type:inline-size}
+.poster.is-photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block}
+.poster.is-photo::after{content:""; position:absolute; inset:45% 0 0; background:linear-gradient(transparent,rgba(0,0,0,.8))}
+.p-credit{position:absolute; z-index:1; top:7cqw; left:7cqw; font:600 4cqw/1 var(--font); letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.85)}
+.p-title{position:absolute; z-index:1; left:7cqw; right:7cqw; bottom:6cqw; font:700 10.5cqw/1.1 var(--font); letter-spacing:.02em; color:var(--white); text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.poster .age{z-index:2}
 .age{position:absolute; right:6px; bottom:6px; display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:var(--radius-pill);
   background:var(--white); color:var(--app-ink); font:800 11px/1 var(--font)}
 .card h3{font:800 18px/24px var(--font); text-transform:uppercase}
@@ -612,7 +618,7 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
         <p>Après « Réserver », la démo simule la suite du parcours : nombre de places, choix des sièges sur un plan de salle fictif, récapitulatif puis confirmation avec un numéro fictif. Les tarifs et le paiement ne sont pas simulés.</p>
       </section>
 
-      <footer class="page-foot"><strong>Prototype conceptuel non officiel – Caroline Camilleri.</strong> Interface inspirée de l'univers digital public d'UGC, sans lien avec le Groupe UGC. Les emplacements de logo attendent les assets officiels. Films, cinémas et séances sont fictifs.</footer>
+      <footer class="page-foot"><strong>Prototype conceptuel non officiel – Caroline Camilleri.</strong> Interface inspirée de l'univers digital public d'UGC, sans lien avec le Groupe UGC. Les emplacements de logo attendent les assets officiels. Films, cinémas et séances sont fictifs ; certaines affiches sont générées par IA.</footer>
     </div>
   </div>
 </div>
@@ -861,7 +867,15 @@ function posterSVG(key){
     p.lines.map((l,i)=>'<text x="14" y="'+(284-(n-1-i)*24)+'" fill="'+ink+'" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="700" letter-spacing=".5">'+l+'</text>').join("")+
     '</svg>';
 }
-function paintPoster(el,f){ el.innerHTML=posterSVG(f.key)+(AGE[f.r]?'<span class="age">'+AGE[f.r]+'</span>':""); }
+/* Affiches générées par IA (dossier posters/) : titre posé par-dessus, affiche dessinée en secours si l'image manque */
+const PHOTO_POSTERS = new Set(["lisbonne","maison","osaka","pipo","hiver","orbite","fuite","voisins","selle","rock"]);
+function paintPoster(el,f){
+  const age=AGE[f.r]?'<span class="age">'+AGE[f.r]+'</span>':"";
+  if(!PHOTO_POSTERS.has(f.key)){ el.innerHTML=posterSVG(f.key)+age; return; }
+  el.classList.add("is-photo");
+  el.innerHTML='<img src="posters/'+f.key+'.webp" alt="" loading="lazy" decoding="async"><span class="p-credit">Un film fictif</span><span class="p-title">'+POSTERS[f.key].lines.join("<br>")+'</span>'+age;
+  el.querySelector("img").onerror=()=>{ el.classList.remove("is-photo"); el.innerHTML=posterSVG(f.key)+age; };
+}
 
 /* ---------- Parcours réservation simulé ---------- */
 const ROWS="ABCDEFG", PER_ROW=8, MAX_QTY=6;
