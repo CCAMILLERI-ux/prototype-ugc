@@ -415,6 +415,7 @@ button.web-tool:hover{background:rgba(255,255,255,.12)}
 .panel{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:var(--space-6) var(--space-4); display:grid; gap:var(--space-3)}
 .panel h2{font:700 20px/28px var(--font)}
 .panel .eyebrow{margin-bottom:calc(-1 * var(--space-1))}
+.panel-why{border-left:4px solid var(--ugc-blue)}
 .panel p{max-width:66ch}
 .two{display:grid; grid-template-columns:minmax(0,1fr); gap:var(--space-4)}
 .tbl{overflow-x:auto}
@@ -483,7 +484,7 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
     <p class="eyebrow">Prototype · IA dans le parcours de réservation</p>
     <h1>Quel film ce soir&nbsp;?</h1>
     <p class="lede">Le spectateur dit ce dont il a envie, l'assistant lui propose trois séances du programme et le mène jusqu'à la réservation. Essayez une demande dans l'application.</p>
-    <p class="disclaimer"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>Prototype conceptuel non officiel – Caroline Camilleri</p>
+    <p class="disclaimer"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>Prototype conceptuel non officiel – Caroline Camilleri · un concept, pas une copie de l'existant</p>
   </header>
 
   <div class="modes" role="group" aria-label="Canal affiché dans la démo">
@@ -570,6 +571,12 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
 
     <!-- ---------- Note produit ---------- -->
     <div class="notecol">
+      <section class="panel panel-why" aria-labelledby="whyH">
+        <h2 id="whyH">Pourquoi ce prototype&nbsp;?</h2>
+        <p>Ce prototype <strong>n'a pas vocation à imiter ni à remplacer l'application ou le site UGC</strong>. Il reprend leurs codes visuels pour que le concept se lise dans un contexte familier, mais son objet est ailleurs : montrer comment je passe d'une intuition produit à un parcours testable, en cadrant le problème, en formulant une hypothèse, en maquettant un parcours interactif sur deux canaux et en définissant comment mesurer le résultat.</p>
+        <p>L'assistant décrit ici est une <strong>hypothèse à valider</strong> avec les équipes et les spectateurs. Ce n'est pas un diagnostic des outils actuels, dont je ne connais ni les données d'usage ni les contraintes techniques.</p>
+      </section>
+
       <section class="panel">
         <p class="eyebrow">Note produit</p>
         <h2>Le problème</h2>
