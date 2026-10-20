@@ -17,7 +17,10 @@
   --text-primary:#10131A; --text-secondary:#60646C; --text-muted:#858A94;
   --border:#E2E5EA; --border-strong:#C7CBD2;
   --success:#18794E; --warning:#A15C00; --error:#C62828;
-  --red:#D7063B; --red-dark:#B0002E; --grey:#E8EAF0; --page-navy:#0B1D5C;
+  --red:#B40000; --red-dark:#8E0000; --grey:#E8EAF0; --page-navy:#00134C;
+  /* relevés sur la capture de ugc.fr */
+  --site-navy:#00134C; --nav-grey:#F1F2F6; --panel-grey:#DADBE6; --info-grey:#E4E5EB; --info-blue:#1BA1E8;
+  --radius-btn:6px; --radius-card:10px; --radius-panel:16px;
 
   --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-6:24px; --space-8:32px; --space-12:48px; --space-16:64px;
   --radius-xs:2px; --radius-sm:4px; --radius-md:8px; --radius-pill:999px;
@@ -33,6 +36,9 @@
 html{-webkit-text-size-adjust:100%}
 body{margin:0; background:var(--white); color:var(--text-primary); font:400 16px/24px var(--font)}
 h1,h2,h3,h4,p{margin:0}
+/* Site simulé : police condensée partout, comme sur ugc.fr ; la note produit reste en Inter */
+.site{--font:var(--cond)}
+.site .input,.site select.input{font-size:17px}
 button,input,select{font:inherit}
 .icon{width:20px; height:20px; flex:none; fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round}
 .icon-sm{width:16px; height:16px}
@@ -49,24 +55,25 @@ button,input,select{font:inherit}
 .folio a[aria-current="page"]{color:var(--text-primary); text-decoration:none; cursor:default}
 
 /* ---------- En-tête ugc.fr ---------- */
-.top{background:var(--ugc-navy); color:var(--white)}
+.top{background:var(--site-navy); color:var(--white)}
 .top .wrap{display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); height:64px}
 .logo-slot{display:inline-flex; align-items:center; height:36px; padding:0 var(--space-4); border:1px dashed rgba(255,255,255,.6); border-radius:var(--radius-xs); font:700 12px/16px var(--font); letter-spacing:.08em}
 .tools{display:flex; gap:var(--space-1)}
 .tool{display:grid; justify-items:center; gap:2px; min-width:44px; padding:var(--space-1) var(--space-2); font:600 11px/14px var(--cond); letter-spacing:.04em; text-transform:uppercase}
 .tool span{display:none}
 .tool.on{color:var(--ugc-light-blue)}
-.nav{border-bottom:1px solid var(--border); background:var(--white)}
-.nav ul{display:flex; gap:var(--space-6); margin:0; padding:0; list-style:none; overflow-x:auto; scrollbar-width:none; font:500 14px/20px var(--cond); letter-spacing:.03em; text-transform:uppercase; color:var(--ugc-navy)}
+.nav{background:var(--nav-grey)}
+.nav ul{display:flex; gap:var(--space-8); margin:0; padding:0; list-style:none; overflow-x:auto; scrollbar-width:none; font:500 14px/20px var(--cond); letter-spacing:.03em; text-transform:uppercase; color:var(--ugc-navy)}
 .nav li{padding:var(--space-3) 0; border-bottom:3px solid transparent; white-space:nowrap}
-.nav li.on{color:var(--ugc-blue); border-bottom-color:var(--ugc-electric-blue); font-weight:600}
-.crumb{font:500 13px/18px var(--cond); letter-spacing:.03em; text-transform:uppercase; color:var(--text-secondary); padding-top:var(--space-3); padding-bottom:var(--space-3)}
-.crumb ol{display:flex; flex-wrap:wrap; gap:var(--space-1); margin:0; padding:0; list-style:none}
+.crumb{font:500 13px/18px var(--cond); letter-spacing:.03em; text-transform:uppercase; color:#8A93B2; padding-top:var(--space-3); padding-bottom:var(--space-3)}
+.crumb ol{display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-1); margin:0; padding:0; list-style:none}
+.crumb .icon{width:16px; height:16px; margin-right:var(--space-2); color:var(--site-navy)}
+.crumb li:first-child::before,.crumb li:nth-child(2)::before{content:none}
 .crumb li+li::before{content:"/"; margin-right:var(--space-1)}
-.crumb [aria-current]{color:var(--ugc-navy); font-weight:600}
+.crumb [aria-current]{color:var(--site-navy); font-weight:600}
 
 /* ---------- Éléments communs ---------- */
-.btn{display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2); min-height:48px; padding:0 var(--space-6); border-radius:var(--radius-xs);
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2); min-height:48px; padding:0 var(--space-6); border-radius:var(--radius-btn);
   font:600 16px/20px var(--cond); letter-spacing:.06em; text-transform:uppercase; text-decoration:none; cursor:pointer;
   transition:background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast)}
 .btn-primary{background:var(--red); border:2px solid var(--red); color:var(--white)}
@@ -92,34 +99,99 @@ button,input,select{font:inherit}
 .alert-error ul{margin:var(--space-1) 0 0; padding-left:20px}
 .alert-error a{color:var(--error); font-weight:600}
 
-/* ---------- Page offres ---------- */
-.offers{background:var(--page-navy); color:var(--white); padding:var(--space-8) 0 var(--space-12)}
-.offers h1{font:500 30px/34px var(--cond); text-transform:uppercase; text-align:center; max-width:760px; margin:0 auto}
-.offers .intro{font:400 15px/22px var(--font); text-align:center; color:#D5D9E8; max-width:620px; margin:var(--space-4) auto 0}
-.promo-line{display:flex; justify-content:center; margin-top:var(--space-6)}
-.promo{display:inline-flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:var(--space-2) var(--space-3); padding:var(--space-2) var(--space-4); background:#1A2CC8; border-radius:var(--radius-xs); font:600 15px/20px var(--cond); letter-spacing:.04em; text-transform:uppercase; text-align:center}
-.grid{display:grid; grid-template-columns:minmax(0,1fr); gap:var(--space-4); margin-top:var(--space-8)}
-.offer{position:relative; display:grid; grid-template-rows:auto auto 1fr auto auto; gap:var(--space-3); padding:var(--space-6) var(--space-4) var(--space-4); background:var(--white); color:var(--text-primary); border-radius:var(--radius-md); text-align:center}
-.offer .who{position:absolute; top:var(--space-3); right:var(--space-3); display:flex; color:var(--accent)}
-.offer .who .icon{width:18px; height:18px; stroke-width:2.25}
-.cardviz{justify-self:center; width:96px; aspect-ratio:1.586; border-radius:6px; background:linear-gradient(135deg,#0A1580,#061A55 60%,#1A2CC8); display:grid; place-items:center; box-shadow:0 4px 10px rgba(6,26,85,.3)}
-.cardviz span{border:1px dashed rgba(255,255,255,.6); border-radius:2px; padding:0 4px; font:700 8px/14px var(--font); letter-spacing:.08em; color:var(--white)}
-.offer h2{font:500 20px/24px var(--cond); text-transform:uppercase; color:var(--ugc-navy)}
-.offer .tag{font:600 13px/16px var(--cond); letter-spacing:.04em; text-transform:uppercase; color:var(--accent)}
-.offer ul{list-style:none; margin:0; padding:0; display:grid; gap:var(--space-2); text-align:left; font:400 13px/18px var(--font)}
+/* ---------- Page offres (relevés sur la capture de ugc.fr/les-offres-ugc-illimite.html) ---------- */
+.offers{background:radial-gradient(ellipse 70% 360px at 50% 0,#0B3AA8 0%,rgba(11,58,168,0) 100%),var(--site-navy); color:var(--white); padding:var(--space-8) 0 var(--space-12)}
+.offers h1{font:400 30px/34px var(--cond); text-transform:uppercase; text-align:center; max-width:640px; margin:0 auto; letter-spacing:.01em; text-wrap:balance}
+.offers h1:focus{outline:none}
+.offers .intro{font:400 16px/21px var(--cond); text-align:center; color:#E1E6F5; max-width:560px; margin:var(--space-4) auto 0}
+.compare-link{display:flex; justify-content:flex-end; margin-top:var(--space-8)}
+.compare-link a{color:var(--white); font:600 13px/16px var(--cond); letter-spacing:.04em; text-transform:uppercase; text-underline-offset:3px}
+.grid{display:grid; grid-template-columns:minmax(0,1fr); gap:var(--space-4); margin-top:var(--space-3)}
+.offer{position:relative; display:flex; flex-direction:column; gap:var(--space-3); padding:var(--space-8) var(--space-4) var(--space-3); background:var(--white); color:var(--site-navy); border-radius:var(--radius-card); text-align:center}
+.offer .who{position:absolute; top:var(--space-2); right:var(--space-3); display:flex; color:var(--icon)}
+.offer .who svg{width:12px; height:20px}
+.offer .limited{position:absolute; top:var(--space-2); left:var(--space-3); padding:0 6px; background:#F1F2F6; border-radius:2px; font:500 10px/16px var(--cond); text-transform:uppercase; letter-spacing:.04em; color:var(--text-secondary)}
+.cardviz{justify-self:center; align-self:center; width:96px; aspect-ratio:1.586; border-radius:6px; background:linear-gradient(135deg,#0A1580,#00134C 60%,#1A2CC8); display:grid; place-items:center; box-shadow:0 6px 12px rgba(0,19,76,.35)}
+.offer .cardviz,.cmp-body .cardviz{transform:rotate(-6deg)}
+.cardviz span{border:1px dashed rgba(255,255,255,.6); border-radius:2px; padding:0 4px; font:700 8px/14px var(--cond); letter-spacing:.08em; color:var(--white)}
+.offer h2{font:400 19px/22px var(--cond); text-transform:uppercase; color:var(--site-navy); margin-top:var(--space-3)}
+.offer .tag{font:600 12px/16px var(--cond); letter-spacing:.04em; text-transform:uppercase; color:var(--accent)}
+.offer ul{list-style:none; margin:0; padding:var(--space-3) 0 0; border-top:1px solid #E4E5EB; display:grid; gap:var(--space-1); text-align:left; font:400 14px/18px var(--cond); color:#3A4466; flex:1; align-content:start}
 .offer li{display:flex; gap:var(--space-2)}
-.offer li .icon{width:16px; height:16px; color:var(--accent); stroke-width:2.5; margin-top:1px}
-.offer li b{font-weight:600}
-.price{font:600 28px/32px var(--cond); color:var(--ugc-navy)}
-.price small{font:500 14px/16px var(--cond)}
-.price-sub{display:block; font:400 12px/16px var(--font); color:var(--text-secondary)}
-.offer-actions{display:grid; grid-template-columns:44px 1fr; gap:var(--space-2)}
-.info-btn{display:inline-flex; align-items:center; justify-content:center; width:44px; min-height:44px; border:0; border-radius:var(--radius-xs); background:var(--grey); color:var(--ugc-navy); cursor:pointer}
-.info-btn:hover{background:#D5D9E4}
-.offer details{text-align:left; font:400 13px/18px var(--font); color:var(--text-secondary)}
-.howto{margin-top:var(--space-12); display:grid; gap:var(--space-4); padding:var(--space-6); background:#E5E8F0; border-radius:var(--radius-xs); color:var(--text-primary)}
-.howto h2{font:400 26px/30px var(--cond); text-transform:uppercase; color:var(--ugc-navy)}
-.howto ol{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
+.offer li .icon{width:15px; height:15px; color:var(--icon); stroke-width:3; margin-top:2px}
+.offer li b{font-weight:600; color:var(--site-navy)}
+.offer li .promo-perk{font-weight:600; text-transform:uppercase; text-decoration:underline; text-underline-offset:2px; color:var(--site-navy)}
+.offer sup,.fn{font-size:.7em; color:var(--info-blue); font-weight:600}
+.price-box{padding-top:var(--space-3); border-top:1px solid #E4E5EB}
+.price{font:600 26px/28px var(--cond); color:var(--site-navy)}
+.price sup{font:600 12px/1 var(--cond); color:var(--site-navy); vertical-align:10px; text-transform:uppercase}
+.price-sub{display:block; font:400 11px/15px var(--cond); color:var(--text-secondary); margin-top:2px}
+.offer-actions{display:grid; grid-template-columns:44px 1fr; gap:var(--space-2); margin-top:var(--space-1)}
+.info-btn{display:inline-flex; align-items:center; justify-content:center; width:44px; min-height:44px; border:0; border-radius:var(--radius-btn); background:var(--info-grey); color:var(--info-blue); cursor:pointer}
+.info-btn:hover{background:#D5D7E0}
+.offer .details{text-align:left; font:400 14px/18px var(--cond); color:var(--text-secondary)}
+/* Tuiles de mise en avant */
+.tile{border-radius:var(--radius-card); overflow:hidden; display:grid; place-items:center; text-align:center; padding:var(--space-8) var(--space-4); color:var(--white);
+  background:radial-gradient(ellipse at 60% 30%,#0D49C9 0%,#04238A 55%,#011560 100%); border:1px solid rgba(255,255,255,.12)}
+.tile-promo .k{font:600 18px/20px var(--cond); text-transform:uppercase}
+.tile-promo .m{font:400 30px/34px var(--cond); text-transform:uppercase; margin-top:var(--space-3)}
+.tile-promo .big{font:700 112px/96px var(--cond); letter-spacing:-.02em}
+.tile-promo .big sup{font-size:40px; vertical-align:52px}
+.tile-promo .big small{font-size:32px}
+.tile-promo .f{font:600 16px/20px var(--cond); text-transform:uppercase; color:#4FB4F5; margin-top:var(--space-2)}
+.tile-promo .hl{display:inline-block; padding:2px var(--space-2); background:#1BA1E8; font:600 16px/22px var(--cond); text-transform:uppercase; margin-top:var(--space-1)}
+.tile-promo .d{font:400 15px/20px var(--cond); text-transform:uppercase; margin-top:var(--space-3)}
+.tile-perks h3{font:700 30px/30px var(--cond); text-transform:uppercase}
+.tile-perks h3 span{color:#4FB4F5}
+.tile-perks ul{list-style:none; margin:var(--space-4) 0 0; padding:0; display:grid; gap:var(--space-3); font:600 13px/16px var(--cond); text-transform:uppercase}
+.tile-perks li .icon{display:block; margin:0 auto var(--space-1); color:#4FB4F5}
+.tile-perks .hl{display:inline-block; padding:1px var(--space-2); background:#1BA1E8}
+.tile-neon{position:relative; min-height:320px; background:radial-gradient(ellipse at 50% 40%,#0B2A8A 0%,#00134C 70%)}
+.tile-neon i{position:absolute; width:46%; aspect-ratio:1.586; border-radius:10px; border:3px solid var(--c); box-shadow:0 0 12px var(--c),inset 0 0 10px var(--c); background:rgba(0,19,76,.7)}
+/* Comment m'abonner */
+.howto{margin-top:var(--space-12); display:grid; gap:var(--space-6); padding:var(--space-6); background:var(--panel-grey); border-radius:var(--radius-panel); color:var(--site-navy)}
+.howto h2{font:400 24px/28px var(--cond); text-transform:uppercase}
+.howto-cards{display:grid; gap:var(--space-4)}
+.howto-card{display:grid; justify-items:center; gap:var(--space-2); padding:var(--space-6) var(--space-4); background:var(--white); border-radius:var(--radius-card); text-align:center}
+.howto-card .ico{display:grid; place-items:center; width:56px; height:56px; border-radius:var(--radius-pill); background:#E4EEF8}
+.howto-card .ico .icon{width:28px; height:28px; color:var(--site-navy)}
+.howto-card b{font:600 14px/18px var(--cond); text-transform:uppercase}
+.howto-card span{font:400 14px/18px var(--cond); color:var(--text-secondary)}
+.more{display:grid; gap:var(--space-2); align-content:start}
+.more h2{text-align:left}
+.more a{color:var(--ugc-electric-blue); font:600 13px/18px var(--cond); text-transform:uppercase; letter-spacing:.03em}
+/* Comparateur */
+.cmp{margin-top:var(--space-12)}
+.cmp-head{display:grid; gap:var(--space-3); align-items:end}
+.cmp-head h2{font:400 26px/30px var(--cond); text-transform:uppercase}
+.cmp-head p{font:400 15px/20px var(--cond); color:#E1E6F5}
+.cmp-cols{display:grid; grid-template-columns:repeat(4,minmax(220px,1fr)); gap:var(--space-4); margin-top:var(--space-6); overflow-x:auto; padding-bottom:var(--space-2)}
+.cmp-col{display:grid; grid-template-rows:auto auto 1fr; gap:var(--space-2); justify-items:stretch}
+.cmp-col>label{font:400 13px/16px var(--cond); text-align:center; color:#E1E6F5}
+.cmp-col select{min-height:40px; padding:0 var(--space-3); border:2px solid var(--white); border-radius:4px; background:var(--white); color:var(--site-navy); font:600 14px/18px var(--cond); text-transform:uppercase}
+.cmp-col select:focus{border-color:var(--ugc-electric-blue)}
+.cmp-body{border-radius:var(--radius-card); min-height:420px; background:#4C5A83; display:grid; place-items:center}
+.cmp-body .plus{width:120px; height:120px; border-radius:var(--radius-pill); border:3px solid rgba(255,255,255,.25); display:grid; place-items:center; color:rgba(255,255,255,.3)}
+.cmp-body .plus .icon{width:64px; height:64px; stroke-width:1.5}
+.cmp-body.full{background:#EDF6FF; color:var(--site-navy); place-items:stretch; padding:var(--space-4); display:flex; flex-direction:column; gap:var(--space-3); font:400 14px/18px var(--cond)}
+.cmp-body.full .cardviz{align-self:center}
+.cmp-body.full .perks{text-align:center; display:grid; gap:2px}
+.cmp-row{display:flex; justify-content:space-between; align-items:center; gap:var(--space-2); padding-top:var(--space-2); border-top:2px solid #BFE0F7}
+.cmp-row .k{font:400 12px/16px var(--cond); text-transform:uppercase; color:#3A4466}
+.cmp-line{display:flex; gap:var(--space-2); align-items:flex-start}
+.cmp-line .icon{width:16px; height:16px; stroke-width:2.5; margin-top:1px}
+.cmp-line.yes .icon{color:#1E9E5A}
+.cmp-line.no{color:var(--text-muted)}
+.cmp-line.no .icon{color:var(--error)}
+.cmp-body.full .btn{margin-top:auto}
+/* Quiz et notes */
+.quiz-band{background:var(--white); border-radius:var(--radius-panel) var(--radius-panel) 0 0; color:var(--site-navy); padding:var(--space-8) 0}
+.quiz{display:grid; gap:var(--space-6); align-items:center}
+.quiz h2{font:400 26px/30px var(--cond); text-transform:uppercase}
+.quiz p{font:400 16px/21px var(--cond); margin-top:var(--space-3)}
+.quiz .btn{margin-top:var(--space-4)}
+.quiz .tile-neon{min-height:220px; border-radius:var(--radius-panel)}
+.notes{border-top:1px solid #E4E5EB; margin-top:var(--space-8); padding-top:var(--space-4); font:400 12px/16px var(--cond); color:var(--text-secondary); display:grid; gap:var(--space-1)}
 
 /* ---------- Parcours ---------- */
 .flow{background:var(--background); padding:var(--space-6) 0 var(--space-16)}
@@ -282,8 +354,10 @@ button,input,select{font:inherit}
 .toast[hidden]{display:none}
 
 /* ---------- Pied de page ugc.fr ---------- */
-.foot{background:var(--ugc-navy); color:var(--white); padding:var(--space-8) 0; text-align:center}
-.foot ul{display:flex; flex-wrap:wrap; justify-content:center; gap:var(--space-2) var(--space-6); margin:0 0 var(--space-4); padding:0; list-style:none; font:600 13px/16px var(--cond); letter-spacing:.04em; text-transform:uppercase}
+.foot{background:var(--site-navy); color:var(--white); padding:var(--space-8) 0; text-align:center}
+.social{display:flex; justify-content:center; gap:var(--space-3); margin-bottom:var(--space-6)}
+.social span{display:grid; place-items:center; width:32px; height:32px; border-radius:var(--radius-pill); background:var(--white); color:var(--site-navy); font:700 12px/1 var(--font)}
+.foot ul{display:flex; flex-wrap:wrap; justify-content:center; gap:var(--space-2) var(--space-8); margin:0 0 var(--space-3); padding:0; list-style:none; font:600 13px/16px var(--cond); letter-spacing:.04em; text-transform:uppercase}
 .foot p{font:400 13px/18px var(--font); color:#C9CEDC}
 
 /* ---------- Note de candidature (hors site simulé) ---------- */
@@ -299,6 +373,8 @@ button,input,select{font:inherit}
 
 @media (min-width:640px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tile-promo{grid-column:span 2}
+  .howto-cards{grid-template-columns:repeat(2,minmax(0,240px))}
   .fields.two{grid-template-columns:repeat(2,minmax(0,1fr))}
   .fields .full{grid-column:1/-1}
   .blocks{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -309,6 +385,11 @@ button,input,select{font:inherit}
   .tool span{display:block}
   .offers h1{font-size:40px; line-height:44px}
   .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .howto{grid-template-columns:1fr auto}
+  .more{justify-items:end}
+  .more h2{text-align:right}
+  .cmp-head{grid-template-columns:1fr 1fr}
+  .quiz{grid-template-columns:1fr 1.6fr}
   .steps{display:grid}
   .progress-m,.bar{display:none}
   .layout{grid-template-columns:minmax(0,1fr) 340px}
@@ -346,6 +427,13 @@ button,input,select{font:inherit}
   <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 5L2 7"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24"><rect width="18" height="12" x="3" y="4" rx="2"/><path d="M2 20h20"/></symbol>
+  <symbol id="i-sofa" viewBox="0 0 24 24"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z"/><path d="M4 18v2"/><path d="M20 18v2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
+  <symbol id="i-popcorn" viewBox="0 0 24 24"><path d="M18 8a2 2 0 0 0 0-4 2 2 0 0 0-4 0 2 2 0 0 0-4 0 2 2 0 0 0-4 0 2 2 0 0 0 0 4"/><path d="M10 22 9 8"/><path d="m14 22 1-14"/><path d="M20 8c.5 0 .9.4.8 1l-2.6 12c-.1.5-.7 1-1.2 1H7c-.6 0-1.1-.4-1.2-1L3.2 9c-.1-.6.3-1 .8-1Z"/></symbol>
   <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
 </svg>
 
@@ -362,7 +450,7 @@ button,input,select{font:inherit}
 </div>
 
 <!-- ---------- Site simulé ---------- -->
-<header>
+<header class="site">
   <div class="top">
     <div class="wrap">
       <span class="logo-slot" role="img" aria-label="Emplacement du logo UGC officiel">LOGO UGC</span>
@@ -375,15 +463,17 @@ button,input,select{font:inherit}
     </div>
   </div>
   <nav class="nav" aria-hidden="true">
-    <div class="wrap"><ul><li>Cinémas</li><li>Films</li><li>Labels &amp; sélections</li><li>En famille</li><li>Événements</li><li>News</li><li class="on">Cartes &amp; offres</li></ul></div>
+    <div class="wrap"><ul><li>Cinémas</li><li>Films</li><li>Labels &amp; sélections</li><li>En famille</li><li>Événements</li><li>Viva l'opéra</li><li>News</li></ul></div>
   </nav>
 </header>
 
-<main id="app"></main>
+<main id="app" class="site"></main>
 
-<footer class="foot">
+<footer class="foot site">
   <div class="wrap">
-    <ul aria-hidden="true"><li>Besoin d'aide&nbsp;?</li><li>Contact</li><li>Conditions générales</li><li>Mentions légales</li><li>Cookies</li><li>Accessibilité</li></ul>
+    <div class="social" aria-hidden="true"><span>f</span><span>X</span><span>ig</span><span>tt</span><span>yt</span><span>in</span></div>
+    <ul aria-hidden="true"><li>Besoin d'aide&nbsp;?</li><li>Contact</li><li>Recrutement</li><li>Groupe</li><li>Professionnels</li><li>Belgique</li></ul>
+    <ul aria-hidden="true"><li>Politique de confidentialité</li><li>Conditions générales</li><li>Mentions légales</li><li>Cookies</li><li>Accessibilité</li><li>Charte des spectateurs</li></ul>
     <p>Prototype de candidature — non officiel · Caroline Camilleri · Paiement et souscription simulés, aucune donnée transmise.</p>
   </div>
 </footer>
@@ -440,17 +530,17 @@ const CONFIG = {
   debitDay:{label:"le même jour chaque mois", source:"démo"},
   cashMonths:12,                                             // paiement au comptant : 12 mois (ugc.fr)
   offers:[
-    {id:"77", name:"UGC Illimité 7/7", tag:"Tous les jours", who:1, accent:"#1769E0", price:23.90, commit:6,
+    {id:"77", name:"UGC Illimité 7/7", tag:"Tous les jours", who:1, icon:"#1BA1E8", accent:"#0A6FB0", days:"Tous les jours", companion:true, price:23.90, commit:6,
      perks:["Accès aux séances cinéma <b>tous les jours</b>","-20 % sur les formules gourmandes","6 € la place pour un accompagnant par séance","Rentable dès 2 séances par mois"], docs:["photo"]},
-    {id:"duo", name:"UGC Illimité Duo", tag:"1 invité à chaque séance", who:2, accent:"#18794E", price:39.90, commit:6,
+    {id:"duo", name:"UGC Illimité Duo", tag:"1 invité à chaque séance", who:2, icon:"#2BB673", accent:"#167A47", days:"Tous les jours", price:39.90, commit:6,
      perks:["<b>1 invité</b> à chaque séance","Accès aux séances cinéma tous les jours","-20 % sur les formules gourmandes","Rentable dès 2 séances par mois"], docs:["photo"]},
-    {id:"26", name:"UGC Illimité -26 ans", tag:"Pour les moins de 26 ans", who:1, accent:"#7B2CBF", price:19.90, commit:6, maxAge:26,
+    {id:"26", name:"UGC Illimité -26 ans", tag:"Pour les moins de 26 ans", who:1, icon:"#A21FE8", accent:"#8A16CF", days:"Tous les jours", companion:true, price:19.90, commit:6, maxAge:26,
      perks:["Accès aux séances cinéma tous les jours","-20 % sur les formules gourmandes","6 € la place pour un accompagnant par séance"], docs:["photo","age"]},
-    {id:"sem", name:"UGC Illimité Semaine", tag:"Du lundi au vendredi inclus", who:1, accent:"#A15C00", price:19.90, commit:6, limited:true,
+    {id:"sem", name:"UGC Illimité Semaine", tag:"Du lundi au vendredi inclus", who:1, icon:"#F2B200", accent:"#9A6500", days:"Du lundi au vendredi", companion:true, price:19.90, commit:6, limited:true,
      perks:["Accès aux séances <b>du lundi au vendredi</b> inclus","-20 % sur les formules gourmandes","6 € la place pour un accompagnant par séance","Rentable dès 2 séances par mois"], docs:["photo"]},
-    {id:"we", name:"UGC Illimité Week-end", tag:"Du vendredi au dimanche inclus", who:1, accent:"#C2410C", price:19.90, commit:6, limited:true,
+    {id:"we", name:"UGC Illimité Week-end", tag:"Du vendredi au dimanche inclus", who:1, icon:"#F07800", accent:"#B84A00", days:"Du vendredi au dimanche", companion:true, price:19.90, commit:6, limited:true,
      perks:["Accès aux séances <b>du vendredi au dimanche</b> inclus","-20 % sur les formules gourmandes","6 € la place pour un accompagnant par séance","Rentable dès 2 séances par mois"], docs:["photo"]},
-    {id:"fam", name:"UGC Illimité Famille", tag:"3 invités à chaque séance", who:3, accent:"#7B2CBF", price:49.90, commit:12, limited:true,
+    {id:"fam", name:"UGC Illimité Famille", tag:"3 invités à chaque séance", who:4, icon:"#D61FA0", accent:"#B0157F", days:"Tous les jours", popcorn:true, price:49.90, commit:12, limited:true,
      perks:["<b>3 invités</b> à chaque séance","2 grands pop-corn offerts chaque mois","Accès aux séances cinéma tous les jours","Rentable dès 2 séances par mois"], docs:["photo"]}
   ],
   docs:{
@@ -498,30 +588,74 @@ function money(){
   return {o,promo,fee,feeDue,free,months:commit,commit,today:today_,monthly:o.price,firstDebit,end:addMonths(today,commit),total:today_+o.price*(commit-1)};
 }
 
-/* ---------- Vue 1 : page des offres ---------- */
-function viewOffers(){
-  const promo=promoActive();
-  app.innerHTML='<div class="wrap crumb"><nav aria-label="Fil d\'Ariane"><ol><li>Accueil</li><li>Cartes &amp; offres</li><li aria-current="page">Les offres UGC Illimité</li></ol></nav></div>'+
-  '<section class="offers"><div class="wrap">'+
-    '<h1 tabindex="-1" id="pageTitle">Choisissez l\'abonnement UGC Illimité fait pour vous</h1>'+
-    '<p class="intro">Le cinéma en illimité dans les cinémas UGC et partenaires. Choisissez votre formule : vous pourrez la modifier à tout moment pendant la souscription.</p>'+
-    (promo?'<div class="promo-line"><p class="promo">'+esc(CONFIG.promo.label)+' <span>jusqu\'au '+fmtDate(new Date(CONFIG.promo.until))+'</span></p></div>':'')+
-    '<div class="grid">'+CONFIG.offers.map(o=>
-      '<article class="offer" style="--accent:'+o.accent+'" aria-labelledby="o-'+o.id+'">'+
-        '<span class="who" aria-hidden="true">'+icon(o.who>1?"users":"user").repeat(o.who>2?2:1)+'</span>'+
-        '<div class="cardviz" aria-hidden="true"><span>VISUEL CARTE</span></div>'+
-        '<div><h2 id="o-'+o.id+'">'+esc(o.name)+'</h2><p class="tag">'+esc(o.tag)+'</p></div>'+
-        '<ul>'+(promo?'<li>'+icon("check")+'<span><b>'+esc(CONFIG.promo.label)+'</b></span></li>':'')+o.perks.map(p=>'<li>'+icon("check")+'<span>'+p+'</span></li>').join("")+'</ul>'+
-        '<p class="price">'+eur(o.price).replace(" €","")+'<small> €/mois</small><span class="price-sub">'+o.commit+' mois d\'engagement par prélèvement'+(o.limited?' · série limitée':'')+'</span></p>'+
-        '<div class="offer-actions"><button type="button" class="info-btn" data-info="'+o.id+'" aria-label="Détails de l\'offre '+esc(o.name)+'" aria-expanded="false" aria-controls="d-'+o.id+'">'+icon("info")+'</button>'+
-        '<button type="button" class="btn btn-primary" data-pick="'+o.id+'">En profiter<span class="sr-only"> : '+esc(o.name)+'</span></button></div>'+
-        '<div id="d-'+o.id+'" hidden><p class="note">'+icon("info","icon-sm")+'<span>Prélèvement : '+o.commit+' mois d\'engagement. Comptant : '+CONFIG.cashMonths+' mois, soit '+eur(o.price*CONFIG.cashMonths)+'. Frais d\'adhésion '+eur(CONFIG.adhesionFee.amount)+' '+demo+'.</span></p></div>'+
-      '</article>').join("")+'</div>'+
-    '<div class="howto"><h2>Comment ça se passe&nbsp;?</h2><ol><li>Choisissez votre formule et votre mode de paiement.</li><li>Connectez-vous ou créez votre compte.</li><li>Renseignez vos informations, ajoutez votre photo (et un justificatif si la formule l\'exige).</li><li>Vérifiez le récapitulatif et payez : votre carte dématérialisée est disponible tout de suite.</li></ol></div>'+
-  '</div></section>';
-  app.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{ const keep=S.offer?S:null; if(!keep) S=blank(); S.offer=b.dataset.pick; S.step=1; save(); render(true); });
-  app.querySelectorAll("[data-info]").forEach(b=>b.onclick=()=>{ const d=$("#d-"+b.dataset.info); d.hidden=!d.hidden; b.setAttribute("aria-expanded",String(!d.hidden)); });
+/* ---------- Vue 1 : page des offres (structure de ugc.fr/les-offres-ugc-illimite.html) ---------- */
+const person=c=>'<svg viewBox="0 0 12 20" aria-hidden="true"><circle cx="6" cy="3" r="2.6" fill="'+c+'"/><path d="M2 7h8v6H8.6v7H3.4v-7H2Z" fill="'+c+'"/></svg>';
+const crumb=items=>'<div class="crumb"><div class="wrap"><nav aria-label="Fil d\'Ariane"><ol><li>'+icon("undo")+'</li>'+items.map((t,i)=>'<li'+(i===items.length-1?' aria-current="page"':'')+'>'+t+'</li>').join("")+'</ol></nav></div></div>';
+const fmtPrice=n=>eur(n).replace(" €","")+'<sup>€/mois</sup>';
+function offerCard(o,promo){
+  return '<article class="offer" style="--accent:'+o.accent+';--icon:'+o.icon+'" aria-labelledby="o-'+o.id+'">'+
+    (o.limited?'<span class="limited">Série limitée<sup>3</sup></span>':'')+
+    '<span class="who" aria-label="'+o.who+(o.who>1?" spectateurs":" spectateur")+' par séance" role="img">'+person(o.icon).repeat(o.who)+'</span>'+
+    '<div class="cardviz" aria-hidden="true"><span>VISUEL CARTE</span></div>'+
+    '<div><h2 id="o-'+o.id+'">'+esc(o.name)+'</h2><p class="tag">'+esc(o.tag)+'</p></div>'+
+    '<ul>'+(promo?'<li>'+icon("check")+'<span><span class="promo-perk">'+esc(CONFIG.promo.label)+'</span> jusqu\'au '+fmtDate(new Date(CONFIG.promo.until))+'<sup>2</sup></span></li>':'')+o.perks.map(p=>'<li>'+icon("check")+'<span>'+p+'</span></li>').join("")+'</ul>'+
+    '<div class="price-box"><p class="price">'+fmtPrice(o.price)+'</p><span class="price-sub">Abonnement à partir de '+o.commit+' mois<sup>1</sup></span></div>'+
+    '<div class="offer-actions"><button type="button" class="info-btn" data-info="'+o.id+'" aria-label="Détails de l\'offre '+esc(o.name)+'" aria-expanded="false" aria-controls="d-'+o.id+'">'+icon("info")+'</button>'+
+    '<button type="button" class="btn btn-primary" data-pick="'+o.id+'">En profiter<span class="sr-only"> : '+esc(o.name)+'</span></button></div>'+
+    '<div id="d-'+o.id+'" class="details" hidden>Prélèvement : '+o.commit+' mois d\'engagement. Comptant : '+CONFIG.cashMonths+' mois, soit '+eur(o.price*CONFIG.cashMonths)+'. Frais d\'adhésion '+eur(CONFIG.adhesionFee.amount)+' '+demo+'.</div>'+
+  '</article>';
 }
+const neon=()=>'<div class="tile tile-neon" aria-hidden="true">'+[["#35E0A8",8,10,-24],["#C04BFF",44,24,-18],["#2D8BFF",14,44,-30],["#FFC22E",50,52,-40],["#FF7A1A",18,72,-28],["#FF3FD8",52,80,-22]].map(([c,x,y,r])=>'<i style="--c:'+c+';left:'+x+'%;top:'+y+'%;transform:rotate('+r+'deg)"></i>').join("")+'</div>';
+let cmpSel=["77","","",""];
+function cmpCol(i){
+  const id=cmpSel[i], o=offerById(id);
+  const opts='<option value="">Choisir une carte</option>'+CONFIG.offers.map(x=>'<option value="'+x.id+'"'+(x.id===id?" selected":"")+'>'+esc(x.name)+'</option>').join("");
+  const body=!o?'<div class="cmp-body"><span class="plus" aria-hidden="true">'+icon("plus")+'</span></div>':
+    '<div class="cmp-body full"><div class="cardviz" aria-hidden="true"><span>VISUEL CARTE</span></div>'+
+    '<div class="perks">'+o.perks.map(p=>'<span>'+p+'</span>').join("")+'</div>'+
+    '<div class="cmp-row"><span class="k">Spectateurs par séance</span><span style="display:flex;color:'+o.icon+'">'+person(o.icon).repeat(o.who).replace(/<svg /g,'<svg width="10" height="18" ')+'</span></div>'+
+    '<div class="cmp-line">'+icon("calendar")+'<span>'+esc(o.days)+'</span></div>'+
+    '<div class="cmp-line '+(o.companion?"yes":"no")+'">'+icon(o.companion?"check":"x")+'<span>6 € la place pour un accompagnant par séance</span></div>'+
+    '<div class="cmp-line '+(o.popcorn?"yes":"no")+'">'+icon(o.popcorn?"check":"x")+'<span>2 grands pop-corn offerts chaque mois</span></div>'+
+    '<div class="cmp-row"><span class="k">Durée d\'engagement</span></div><div class="cmp-line" style="justify-content:space-between"><span>Par prélèvement</span><b>'+o.commit+' mois</b></div><div class="cmp-line" style="justify-content:space-between"><span>Au comptant</span><b>'+CONFIG.cashMonths+' mois</b></div>'+
+    '<div class="cmp-row"><span class="k">Prix mensuel</span><b style="font-size:18px">'+eur(o.price)+'</b></div>'+
+    '<button type="button" class="btn btn-primary" data-pick="'+o.id+'">En profiter<span class="sr-only"> : '+esc(o.name)+'</span></button></div>';
+  return '<div class="cmp-col"><label for="cmp'+i+'">'+(i===0?"Sélectionnez la carte à comparer":"Comparez avec une autre carte")+'</label><select id="cmp'+i+'" data-cmp="'+i+'">'+opts+'</select>'+body+'</div>';
+}
+function viewOffers(){
+  const promo=promoActive(), O=id=>offerCard(offerById(id),promo);
+  const until=fmtDate(new Date(CONFIG.promo.until));
+  app.innerHTML=crumb(["Accueil","Cartes &amp; offres","Les offres UGC Illimité"])+
+  '<section class="offers"><div class="wrap">'+
+    '<h1 tabindex="-1" id="pageTitle">Trouvez la carte UGC Illimité faite pour vous</h1>'+
+    '<p class="intro">Le cinéma en illimité dans les cinémas UGC et partenaires. Choisissez l\'abonnement adapté à vos envies : vous pourrez changer de formule à tout moment pendant la souscription.</p>'+
+    '<p class="compare-link"><a href="#cmpH">Comparer</a></p>'+
+    '<div class="grid">'+O("77")+O("duo")+
+      (promo?'<div class="tile tile-promo"><div><p class="k">Profitez du cinéma<br>en illimité</p><p class="m">1 mois à</p><p class="big">0<sup>€</sup><small>,00</small></p><p class="f">&amp; frais d\'adhésion offerts</p><p class="hl">Sur l\'abonnement de votre choix</p><p class="d">Jusqu\'au '+until+'</p></div></div>':'')+
+      O("26")+
+      '<div class="tile tile-perks"><div><h3>Vos avantages<br><span>UGC Illimité</span></h3><ul>'+
+        '<li>'+icon("ticket")+'<span class="hl">6 € la place</span><br>pour l\'accompagnant</li><li>'+icon("popcorn")+'-20 %<br>sur les formules gourmandes</li><li>'+icon("gift")+'Un cadeau<br>pour votre anniversaire</li><li>'+icon("ticket")+'Des invitations pour 2<br>à des avant-premières</li></ul>'+
+        '<p class="price-sub" style="color:#C9D4F2;margin-top:12px">Selon la formule '+demo+'</p></div></div>'+
+      O("sem")+O("we")+neon()+O("fam")+
+    '</div>'+
+    '<div class="howto"><div><h2>Comment m\'abonner&nbsp;?</h2><div class="howto-cards" style="margin-top:16px">'+
+      '<div class="howto-card"><span class="ico">'+icon("laptop")+'</span><b>M\'abonner en ligne</b><span>Choisissez une offre ci-dessus : 6 étapes, carte disponible tout de suite.</span></div>'+
+      '<div class="howto-card"><span class="ico">'+icon("sofa")+'</span><b>M\'abonner dans mon cinéma</b><span>À la caisse de votre cinéma, avec une pièce d\'identité.</span></div>'+
+    '</div></div><div class="more"><h2>Plus d\'infos</h2><a href="#notes">Conditions générales d\'abonnement</a><a href="#notes">Où utiliser ma carte UGC Illimité&nbsp;?</a><a href="#notes">Comment résilier&nbsp;?</a></div></div>'+
+    '<section class="cmp" aria-labelledby="cmpH"><div class="cmp-head"><h2 id="cmpH" tabindex="-1">Comparer les différents abonnements</h2><p>Utilisez les menus déroulants pour sélectionner les abonnements UGC Illimité qui vous intéressent. Ajoutez jusqu\'à 4 cartes pour comparer leurs avantages.</p></div>'+
+    '<div class="cmp-cols" id="cmpCols">'+[0,1,2,3].map(cmpCol).join("")+'</div></section>'+
+  '</div></section>'+
+  '<section class="quiz-band"><div class="wrap"><div class="quiz"><div><h2>Quelle carte UGC Illimité<br>est faite pour vous&nbsp;?</h2><p>Plutôt ciné en solo ou en tribu&nbsp;? Fan des séances en semaine ou adepte du week-end&nbsp;? <b>Répondez à 3 questions pour découvrir l\'abonnement qui vous correspond.</b></p><button type="button" class="btn btn-primary" data-act="quiz">Faire le test</button></div>'+neon()+'</div>'+
+    '<div class="notes" id="notes"><p><span class="fn">(1)</span> Durée initiale de l\'abonnement : 6 mois par prélèvement (12 mois pour UGC Illimité Famille), 12 mois au comptant. Frais d\'adhésion en sus, '+eur(CONFIG.adhesionFee.amount)+' '+demo+'.</p>'+
+    '<p><span class="fn">(2)</span> '+esc(CONFIG.promo.label)+' jusqu\'au '+until+', relevé sur ugc.fr le 20/10/2026. Conditions détaillées à vérifier sur le site officiel.</p>'+
+    '<p><span class="fn">(3)</span> Série limitée, dans la limite des premières souscriptions.</p><p>Texte de démonstration : les mentions légales officielles font foi.</p></div></div></section>';
+  app.querySelectorAll("[data-info]").forEach(b=>b.onclick=()=>{ const d=$("#d-"+b.dataset.info); d.hidden=!d.hidden; b.setAttribute("aria-expanded",String(!d.hidden)); });
+  bindPicks(app);
+  app.querySelector('.compare-link a').onclick=e=>{ e.preventDefault(); const h=$("#cmpH"); h.scrollIntoView({behavior:"smooth"}); h.focus({preventScroll:true}); };
+  $("#cmpCols").addEventListener("change",e=>{ const sel=e.target.closest("[data-cmp]"); if(!sel) return; const i=+sel.dataset.cmp; cmpSel[i]=sel.value;
+    const col=sel.closest(".cmp-col"); col.outerHTML=cmpCol(i); bindPicks($("#cmpCols")); $("#cmp"+i).focus(); });
+}
+function bindPicks(root){ root.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{ const keep=S.offer?S:null; if(!keep) S=blank(); S.offer=b.dataset.pick; S.step=1; save(); render(true); }); }
 
 /* ---------- Structure commune du parcours ---------- */
 function shell(inner){
@@ -530,7 +664,7 @@ function shell(inner){
   return '<div class="progress"><div class="wrap">'+
       '<p class="progress-m">'+esc(STEPS[n-1])+' <span>Étape '+n+' sur '+STEPS.length+'</span></p><div class="bar" aria-hidden="true"><i style="width:'+(n/STEPS.length*100)+'%"></i></div>'+
       '<ol class="steps" aria-label="Progression : étape '+n+' sur '+STEPS.length+'">'+steps+'</ol></div></div>'+
-    '<div class="wrap crumb"><nav aria-label="Fil d\'Ariane"><ol><li>Accueil</li><li>Cartes &amp; offres</li><li>Les offres UGC Illimité</li><li aria-current="page">Souscription</li></ol></nav></div>'+
+    crumb(["Accueil","Cartes &amp; offres","Les offres UGC Illimité","Souscription"])+
     '<div class="flow"><div class="wrap layout"><div class="main">'+inner+'</div>'+
     (n<6?'<aside class="aside" aria-label="Votre offre">'+summary(o,m)+'</aside>':'')+'</div></div>';
 }
@@ -835,6 +969,7 @@ app.addEventListener("click",e=>{
   else if(act==="fillIban"){ S.payment.iban="FR76 3000 6000 0112 3456 7890 189"; save(); render(false,"#iban"); }
   else if(act==="fillCard"){ S.payment.cardNumber="4970 1000 0000 0063"; S.payment.cardExp="12/29"; S.payment.cardCvc="123"; save(); render(false,"#cardNumber"); }
   else if(act==="forgot") toast("Démo : un lien de réinitialisation serait envoyé par e-mail.");
+  else if(act==="quiz") toast("Démo : le test en 3 questions n'est pas simulé dans ce prototype.");
   else if(act==="book") toast("Démo : ouverture du parcours de réservation de séance.");
   else if(act==="wallet") toast("Démo : la carte serait ajoutée au portefeuille du téléphone.");
   else if(act==="mail") toast("Démo : la carte serait envoyée à "+(S.account.email||"votre adresse e-mail")+".");
