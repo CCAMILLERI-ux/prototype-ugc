@@ -868,7 +868,7 @@ function posterSVG(key){
     '</svg>';
 }
 /* Affiches générées par IA (dossier posters/) : titre posé par-dessus, affiche dessinée en secours si l'image manque */
-const PHOTO_POSTERS = new Set(["lisbonne","maison","osaka","pipo","hiver","orbite","fuite","voisins"]);
+const PHOTO_POSTERS = new Set(["lisbonne","maison","osaka","pipo","hiver","orbite","fuite","voisins","selle"]);
 function paintPoster(el,f){
   const age=AGE[f.r]?'<span class="age">'+AGE[f.r]+'</span>':"";
   if(!PHOTO_POSTERS.has(f.key)){ el.innerHTML=posterSVG(f.key)+age; return; }
