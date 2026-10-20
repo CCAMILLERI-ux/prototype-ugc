@@ -127,16 +127,67 @@ textarea:focus{outline:none; border-color:var(--ugc-electric-blue); box-shadow:v
 .place .icon{color:var(--text-secondary)}
 .seats-low{color:var(--warning); font-weight:600}
 
-/* Confirmation — récapitulatif §35 */
-.confirm{background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--success); border-radius:var(--radius-md); padding:var(--space-4); display:grid; gap:var(--space-4)}
+/* Parcours réservation §35 : Places → Sièges → Récapitulatif → Confirmation */
+.search-view,.book-view{display:grid; gap:var(--space-6)}
+.search-view[hidden],.book-view[hidden]{display:none}
+.back{display:inline-flex; align-items:center; gap:var(--space-2); justify-self:start; min-height:44px; padding:0 var(--space-2) 0 0; border:0; background:none;
+  color:var(--ugc-blue); font:600 14px/20px var(--font); cursor:pointer}
+.back:hover{text-decoration:underline}
+.book-film{display:grid; grid-template-columns:48px minmax(0,1fr); gap:var(--space-3); align-items:center; padding:var(--space-3); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md)}
+.book-film .poster{font-size:20px; padding:var(--space-1) var(--space-2)}
+.book-film strong{display:block; font:700 16px/22px var(--font)}
+.book-film span{font:400 14px/20px var(--font); color:var(--text-secondary)}
+.steps{display:grid; gap:var(--space-2)}
+.steps-k{font:600 12px/16px var(--font); letter-spacing:.08em; text-transform:uppercase; color:var(--text-secondary)}
+.steps ol{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-1)}
+.steps li{padding-top:var(--space-2); border-top:4px solid var(--border); font:400 12px/16px var(--font); color:var(--text-secondary)}
+.steps li.done{border-top-color:var(--ugc-blue)}
+.steps li[aria-current="step"]{border-top-color:var(--ugc-blue); color:var(--text-primary); font-weight:600}
+.step-title{font:700 20px/28px var(--font)}
+.step-title:focus{outline:none}
+.step-hint{font:400 14px/20px var(--font); color:var(--text-secondary); margin-top:calc(-1 * var(--space-4))}
+
+/* Quantité */
+.qty{display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); padding:var(--space-4); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md)}
+.qty-label{font:700 16px/22px var(--font)}
+.qty-sub{display:block; font:400 14px/20px var(--font); color:var(--text-secondary)}
+.stepper{display:flex; align-items:center; gap:var(--space-2)}
+.stepper .btn{width:48px; padding:0}
+.stepper output{min-width:32px; text-align:center; font:700 20px/28px var(--font); font-variant-numeric:tabular-nums}
+
+/* Plan de salle */
+.hall{display:grid; gap:var(--space-3); padding:var(--space-4) var(--space-3); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md)}
+.screen-bar{text-align:center; padding-bottom:var(--space-2); border-bottom:4px solid var(--border-strong); font:600 12px/16px var(--font); letter-spacing:.08em; text-transform:uppercase; color:var(--text-secondary)}
+.seat-grid{display:grid; grid-template-columns:16px repeat(4,minmax(0,1fr)) 12px repeat(4,minmax(0,1fr)); gap:var(--space-2) var(--space-1); align-items:center}
+.row-k{font:600 12px/16px var(--font); color:var(--text-secondary); text-align:center}
+.seat{aspect-ratio:1; width:100%; max-width:40px; justify-self:center; display:inline-flex; align-items:center; justify-content:center; padding:0;
+  background:var(--white); border:1px solid var(--ugc-blue); border-radius:var(--radius-sm); color:var(--ugc-blue); cursor:pointer;
+  transition:background var(--duration-fast), color var(--duration-fast)}
+.seat:hover{background:var(--surface-subtle)}
+.seat[aria-pressed="true"]{background:var(--ugc-blue); color:var(--white)}
+.seat:disabled{background:var(--surface-subtle); border-color:var(--border); color:var(--text-muted); cursor:not-allowed}
+.seat .icon{width:14px; height:14px}
+.legend{display:flex; flex-wrap:wrap; gap:var(--space-2) var(--space-4); font:400 12px/16px var(--font); color:var(--text-secondary)}
+.legend span{display:inline-flex; align-items:center; gap:var(--space-2)}
+.legend .seat{width:20px; height:20px; cursor:default; pointer-events:none}
+.legend .seat.sel{background:var(--ugc-blue); color:var(--white)}
+.legend .seat.taken{background:var(--surface-subtle); border-color:var(--border); color:var(--text-muted)}
+.seat-status{font:600 14px/20px var(--font)}
+.seat-status .warn{display:block; font-weight:400; color:var(--warning)}
+
+/* Récapitulatif et confirmation */
+.recap-box{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:var(--space-4); display:grid; gap:var(--space-4)}
+.recap-box.success{border-left:4px solid var(--success)}
 .confirm-head{display:flex; align-items:center; gap:var(--space-3)}
-.confirm-head .ok{display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:var(--radius-pill); background:var(--success); color:var(--white)}
-.confirm h3{font:700 20px/28px var(--font)}
-.confirm h3:focus{outline:none}
+.confirm-head .ok{display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; flex:none; border-radius:var(--radius-pill); background:var(--success); color:var(--white)}
+.ref{font:400 14px/20px var(--font); color:var(--text-secondary)}
+.ref b{font-weight:700; color:var(--text-primary); letter-spacing:.04em}
 .recap{display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--space-2) var(--space-4); margin:0; font:400 14px/20px var(--font)}
 .recap dt{color:var(--text-secondary)}
 .recap dd{margin:0; font-weight:600}
-.confirm p{font:400 14px/20px var(--font); color:var(--text-secondary)}
+.book-note{display:flex; gap:var(--space-2); align-items:flex-start; font:400 14px/20px var(--font); color:var(--text-secondary)}
+.book-note .icon{margin-top:2px}
+.actions{display:grid; gap:var(--space-3)}
 
 /* États vides §26 */
 .empty{display:grid; gap:var(--space-3); padding:var(--space-4); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md)}
@@ -181,7 +232,7 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
   .device{position:sticky; top:var(--space-6)}
 }
 @media (prefers-reduced-motion:no-preference){
-  .card,.confirm{animation:rise var(--duration-normal) ease-out both}
+  .card,.book-view>*{animation:rise var(--duration-normal) ease-out both}
   @keyframes rise{from{transform:translateY(6px)}to{transform:none}}
 }
 </style>
@@ -199,6 +250,9 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
   <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
   <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
 </svg>
 
 <div class="wrap">
@@ -225,6 +279,7 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
         </div>
 
         <div class="app">
+          <div class="search-view" id="searchView">
           <form class="ask" id="askForm">
             <label for="q">Dites-nous ce qui vous ferait plaisir</label>
             <p class="hint" id="qHint">Envie, horaire, avec qui, version…</p>
@@ -237,6 +292,9 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
 
           <div class="understood" id="understood"></div>
           <div class="results" id="results" aria-live="polite"></div>
+          </div>
+
+          <section class="book-view" id="bookView" aria-label="Réservation" hidden></section>
 
           <p class="app-note"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg><span>Démo : programme et cinémas fictifs, aucune réservation réelle. Prototype conceptuel non officiel – Caroline Camilleri.</span></p>
         </div>
@@ -289,6 +347,7 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
       <section class="panel">
         <h2>Comment fonctionne la démo</h2>
         <p>La demande est interprétée par un moteur de règles local, exécuté dans le navigateur : il repère l'envie, le jour, l'horaire, la version, le public et le cinéma, puis classe les séances du programme fictif. Aucune donnée n'est envoyée à un service externe. En production, ce moteur servirait de repli si le modèle d'IA ne répond pas.</p>
+        <p>Après « Réserver », la démo simule la suite du parcours : nombre de places, choix des sièges sur un plan de salle fictif, récapitulatif puis confirmation avec un numéro fictif. Les tarifs et le paiement ne sont pas simulés.</p>
       </section>
 
       <footer class="page-foot"><strong>Prototype conceptuel non officiel – Caroline Camilleri.</strong> Interface inspirée de l'univers digital public d'UGC, sans lien avec le Groupe UGC. Les emplacements de logo attendent les assets officiels. Films, cinémas et séances sont fictifs.</footer>
@@ -336,7 +395,7 @@ const EXAMPLES = ["Un film drôle ce soir après 20 h, avec mon ado de 13 ans","
 const $ = id=>document.getElementById(id);
 const chips=$("chips");
 EXAMPLES.forEach(e=>{const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=e; b.onclick=()=>{$("q").value=e; run();}; chips.append(b);});
-$("searchBtn").onclick=()=>$("q").focus();
+$("searchBtn").onclick=()=>{ if(bk) closeBooking(true); else $("q").focus(); };
 
 /* ---------- Moteur de règles local ---------- */
 function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
@@ -400,8 +459,7 @@ function render(res){
       '<div class="slot"><div class="slot-line"><span class="time"></span><span class="badge badge-version"></span><span class="day"></span></div>'+
       '<p class="place">'+icon("map-pin","icon-sm")+'<span class="cine"></span></p>'+
       '<button class="btn btn-primary btn-block book" type="button">'+icon("ticket")+'Réserver</button></div>';
-    const po=c.querySelector(".poster"); po.style.background="linear-gradient(160deg,"+f.c[0]+","+f.c[1]+")";
-    po.textContent=f.t.split(/[\s']+/).filter(w=>!/^(les|le|la|du|de|et|à|l|mes|en|plan)$/i.test(w))[0].slice(0,1).toUpperCase();
+    paintPoster(c.querySelector(".poster"),f);
     c.querySelector("h3").textContent=f.t;
     c.querySelector(".meta").textContent=f.g.charAt(0).toUpperCase()+f.g.slice(1)+" · "+fmtD(f.d)+" · "+f.r;
     c.querySelector(".why span").textContent=p.why;
@@ -412,25 +470,147 @@ function render(res){
     const seats=document.createElement("span"); seats.textContent=s.seats<10?"plus que "+s.seats+" places":s.seats+" places";
     if(s.seats<10) seats.className="seats-low"; cine.append(seats);
     const book=c.querySelector(".book"); book.setAttribute("aria-label","Réserver "+f.t+", "+DAY[s.day].toLowerCase()+" à "+s.time.replace(":"," h ")+", "+s.cine);
-    book.onclick=()=>confirmSheet(s,c,book);
+    book.onclick=()=>openBooking(s,book);
     box.append(c);
   });
 }
-function confirmSheet(s,card,trigger){
-  const f=FILMS[s.film]; const sh=document.createElement("section"); sh.className="confirm";
-  sh.innerHTML='<div class="confirm-head"><span class="ok">'+icon("check","icon-sm")+'</span><h3 tabindex="-1">Séance sélectionnée</h3></div>'+
-    '<dl class="recap"><dt>Film</dt><dd class="r-film"></dd><dt>Cinéma</dt><dd class="r-cine"></dd><dt>Date</dt><dd class="r-day"></dd><dt>Heure</dt><dd class="r-time"></dd><dt>Version</dt><dd class="r-v"></dd></dl>'+
-    '<p>Étape suivante du vrai parcours : choix des places et paiement. Ici, la démo s\'arrête.</p>'+
-    '<button type="button" class="btn btn-secondary">'+icon("arrow-left")+'Revenir aux propositions</button>';
-  sh.querySelector(".r-film").textContent=f.t;
-  sh.querySelector(".r-cine").textContent=s.cine;
-  sh.querySelector(".r-day").textContent=DAY[s.day];
-  sh.querySelector(".r-time").textContent=s.time.replace(":"," h ");
-  sh.querySelector(".r-v").textContent=VERSION[s.v]+" ("+s.v+")";
-  sh.querySelector("button").onclick=()=>{sh.replaceWith(card); trigger.focus();};
-  card.replaceWith(sh);
-  sh.querySelector("h3").focus();
+function paintPoster(el,f){
+  el.style.background="linear-gradient(160deg,"+f.c[0]+","+f.c[1]+")";
+  el.textContent=f.t.split(/[\s']+/).filter(w=>!/^(les|le|la|du|de|et|à|l|mes|en|plan)$/i.test(w))[0].slice(0,1).toUpperCase();
 }
+
+/* ---------- Parcours réservation simulé ---------- */
+const ROWS="ABCDEFG", PER_ROW=8, MAX_QTY=6;
+const STEPS=["Places","Sièges","Récapitulatif"];
+const esc=t=>String(t).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+let bk=null;
+
+/* Sièges occupés tirés de façon stable à partir de l'id de séance : il reste exactement s.seats places libres */
+function takenSeats(s){
+  let h=0; for(const ch of s.id) h=(h*31+ch.charCodeAt(0))>>>0;
+  const rnd=()=>{h=(h+0x6D2B79F5)>>>0; let t=h; t=Math.imul(t^t>>>15,t|1); t^=t+Math.imul(t^t>>>7,t|61); return ((t^t>>>14)>>>0)/4294967296;};
+  const all=[]; for(const r of ROWS) for(let n=1;n<=PER_ROW;n++) all.push(r+n);
+  for(let i=all.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1)); [all[i],all[j]]=[all[j],all[i]];}
+  return new Set(all.slice(0,Math.max(0,all.length-s.seats)));
+}
+function openBooking(s,trigger){
+  const taken=takenSeats(s); const free=ROWS.length*PER_ROW-taken.size;
+  bk={s, f:FILMS[s.film], trigger, taken, maxQty:Math.min(MAX_QTY,free), qty:Math.min(2,free), seats:[]};
+  $("searchView").hidden=true; $("bookView").hidden=false;
+  showStep(1);
+}
+function closeBooking(focusQuery){
+  $("bookView").hidden=true; $("bookView").innerHTML=""; $("searchView").hidden=false;
+  const t=bk.trigger; bk=null;
+  if(focusQuery){ $("q").focus(); $("q").select(); } else t.focus();
+}
+function filmHeader(){
+  const s=bk.s;
+  return '<div class="book-film"><div class="poster" aria-hidden="true"></div><div><strong>'+esc(bk.f.t)+'</strong><span>'+esc(DAY[s.day]+" · "+s.time.replace(":"," h ")+" · "+s.v+" · "+s.cine)+'</span></div></div>';
+}
+function stepper(n){
+  return '<div class="steps"><span class="steps-k">Étape '+n+' sur '+STEPS.length+'</span><ol>'+
+    STEPS.map((l,i)=>'<li'+(i+1<n?' class="done"':'')+(i+1===n?' aria-current="step"':'')+'>'+l+'</li>').join("")+'</ol></div>';
+}
+function recapList(){
+  const s=bk.s;
+  return '<dl class="recap"><dt>Film</dt><dd>'+esc(bk.f.t)+'</dd><dt>Cinéma</dt><dd>'+esc(s.cine)+'</dd><dt>Date</dt><dd>'+esc(DAY[s.day])+'</dd>'+
+    '<dt>Heure</dt><dd>'+s.time.replace(":"," h ")+'</dd><dt>Version</dt><dd>'+esc(VERSION[s.v])+' ('+s.v+')</dd>'+
+    '<dt>Places</dt><dd>'+bk.qty+' · '+bk.seats.join(", ")+'</dd></dl>';
+}
+function showStep(n){
+  const v=$("bookView"); const backLabel=n===1?"Revenir aux propositions":"Retour";
+  let html='<button type="button" class="back" data-act="back">'+icon("arrow-left","icon-sm")+backLabel+'</button>'+filmHeader();
+  if(n<=3) html+=stepper(n);
+
+  if(n===1){
+    html+='<h3 class="step-title" tabindex="-1">Combien de places&nbsp;?</h3>'+
+      '<div class="qty"><div><span class="qty-label" id="qtyL">Nombre de places</span><span class="qty-sub">'+bk.maxQty+' au maximum pour cette séance</span></div>'+
+      '<div class="stepper" role="group" aria-labelledby="qtyL"><button type="button" class="btn btn-secondary" data-act="minus" aria-label="Retirer une place">'+icon("minus")+'</button>'+
+      '<output aria-live="polite" id="qtyOut">'+bk.qty+'</output>'+
+      '<button type="button" class="btn btn-secondary" data-act="plus" aria-label="Ajouter une place">'+icon("plus")+'</button></div></div>'+
+      '<p class="book-note">'+icon("info","icon-sm")+'<span>Tarifs non simulés dans cette démo : dans le vrai parcours, le choix du tarif se fait ici.</span></p>'+
+      '<button type="button" class="btn btn-primary btn-block" data-act="next">Choisir les sièges</button>';
+  }
+  if(n===2){
+    let grid='';
+    for(const r of ROWS){
+      grid+='<span class="row-k" aria-hidden="true">'+r+'</span>';
+      for(let i=1;i<=PER_ROW;i++){
+        if(i===5) grid+='<span aria-hidden="true"></span>';
+        const id=r+i, taken=bk.taken.has(id), sel=bk.seats.includes(id);
+        grid+= taken
+          ? '<button type="button" class="seat" disabled aria-label="Rang '+r+', place '+i+', occupée">'+icon("x")+'</button>'
+          : '<button type="button" class="seat" data-seat="'+id+'" aria-pressed="'+sel+'" aria-label="Rang '+r+', place '+i+'">'+(sel?icon("check"):'')+'</button>';
+      }
+    }
+    html+='<h3 class="step-title" tabindex="-1">Choisissez vos sièges</h3>'+
+      '<p class="step-hint">Salle fictive, disponibilités simulées.</p>'+
+      '<div class="hall"><div class="screen-bar">Écran</div><div class="seat-grid">'+grid+'</div>'+
+      '<div class="legend"><span><i class="seat" aria-hidden="true"></i>Libre</span><span><i class="seat sel" aria-hidden="true">'+icon("check")+'</i>Votre choix</span>'+
+      '<span><i class="seat taken" aria-hidden="true">'+icon("x")+'</i>Occupée</span></div></div>'+
+      '<p class="seat-status" id="seatStatus" aria-live="polite"></p>'+
+      '<button type="button" class="btn btn-primary btn-block" data-act="next">Continuer</button>';
+  }
+  if(n===3){
+    html+='<h3 class="step-title" tabindex="-1">Vérifiez votre réservation</h3>'+
+      '<div class="recap-box">'+recapList()+'</div>'+
+      '<p class="book-note">'+icon("info","icon-sm")+'<span>Paiement non simulé : dans le vrai parcours, cette étape mène au paiement de la billetterie.</span></p>'+
+      '<div class="actions"><button type="button" class="btn btn-primary btn-block" data-act="next">'+icon("ticket")+'Confirmer la réservation</button>'+
+      '<button type="button" class="btn btn-secondary btn-block" data-act="back">Modifier les sièges</button></div>';
+  }
+  if(n===4){
+    const ref="DEMO-"+Math.random().toString(36).slice(2,6).toUpperCase();
+    html='<div class="recap-box success"><div class="confirm-head"><span class="ok">'+icon("check","icon-sm")+'</span><h3 class="step-title" tabindex="-1">Réservation simulée</h3></div>'+
+      '<p class="ref">Numéro fictif : <b>'+ref+'</b></p>'+recapList()+'</div>'+
+      '<p class="book-note">'+icon("info","icon-sm")+'<span>Démo : aucune place n\'a été réellement réservée. Dans le vrai parcours, les billets arrivent ici et par e-mail.</span></p>'+
+      '<div class="actions"><button type="button" class="btn btn-primary btn-block" data-act="new">'+icon("search")+'Nouvelle recherche</button>'+
+      '<button type="button" class="btn btn-secondary btn-block" data-act="list">Revenir aux propositions</button></div>';
+  }
+  v.innerHTML=html; v.dataset.step=n;
+  const po=v.querySelector(".book-film .poster"); if(po) paintPoster(po,bk.f);
+  if(n===1) updateQty();
+  if(n===2) updateSeats();
+  v.querySelector(".step-title").focus();
+}
+function updateQty(){
+  const v=$("bookView");
+  $("qtyOut").textContent=bk.qty;
+  v.querySelector('[data-act="minus"]').disabled=bk.qty<=1;
+  v.querySelector('[data-act="plus"]').disabled=bk.qty>=bk.maxQty;
+}
+function updateSeats(warn){
+  const left=bk.qty-bk.seats.length;
+  $("seatStatus").innerHTML=esc(bk.seats.length+" place"+(bk.seats.length>1?"s":"")+" sur "+bk.qty+" choisie"+(bk.seats.length>1?"s":"")+
+    (bk.seats.length?" : "+bk.seats.join(", "):""))+(warn?'<span class="warn">'+esc(warn)+'</span>':'');
+  const next=$("bookView").querySelector('[data-act="next"]');
+  next.disabled=left!==0;
+  next.textContent=left>0?"Encore "+left+" siège"+(left>1?"s":"")+" à choisir":"Continuer";
+}
+$("bookView").addEventListener("click",e=>{
+  if(!bk) return;
+  const v=$("bookView"), n=+v.dataset.step;
+  const seat=e.target.closest("[data-seat]");
+  if(seat){
+    const id=seat.dataset.seat, i=bk.seats.indexOf(id);
+    if(i>=0){ bk.seats.splice(i,1); }
+    else if(bk.seats.length<bk.qty){ bk.seats.push(id); }
+    else { updateSeats("Vous avez déjà choisi "+bk.qty+" siège"+(bk.qty>1?"s":"")+". Retirez-en un pour en choisir un autre."); return; }
+    const on=bk.seats.includes(id); seat.setAttribute("aria-pressed",on); seat.innerHTML=on?icon("check"):"";
+    updateSeats(); return;
+  }
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  const act=b.dataset.act;
+  if(act==="minus"||act==="plus"){
+    bk.qty=Math.min(bk.maxQty,Math.max(1,bk.qty+(act==="plus"?1:-1)));
+    if(bk.seats.length>bk.qty) bk.seats.length=bk.qty;
+    updateQty(); return;
+  }
+  if(act==="back"){ n===1?closeBooking():showStep(n-1); return; }
+  if(act==="next"){ showStep(n+1); return; }
+  if(act==="new"){ closeBooking(true); return; }
+  if(act==="list"){ closeBooking(); return; }
+});
 
 function run(){ const q=$("q").value.trim(); if(!q) return; render(localPick(q)); }
 $("askForm").addEventListener("submit",e=>{e.preventDefault(); run();});
