@@ -21,6 +21,7 @@
   --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-6:24px; --space-8:32px; --space-12:48px; --space-16:64px;
   --radius-xs:2px; --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-pill:999px;
   --shadow-card:0 4px 16px rgba(0,0,0,.08);
+  --shadow-overlay:0 12px 32px rgba(0,0,0,.18);
   --focus-ring:0 0 0 3px rgba(23,105,224,.25);
   --duration-fast:120ms; --duration-normal:200ms;
 
@@ -248,6 +249,61 @@ textarea:focus{outline:none; border-color:var(--app-cyan)}
 
 .app-note{display:flex; gap:var(--space-2); align-items:flex-start; font:400 12px/16px var(--font); color:var(--app-muted); padding-top:var(--space-4); border-top:1px solid var(--app-line)}
 
+/* ---------- Mode « Site web » ----------
+   Même DOM et même logique que l'app ; seules la mise en page et la réservation (fenêtre modale) changent. */
+.modes{display:inline-flex; justify-self:start; border:1px solid var(--ugc-blue); border-radius:var(--radius-sm); overflow:hidden}
+.mode{display:inline-flex; align-items:center; gap:var(--space-2); min-height:44px; padding:0 var(--space-4); border:0; background:var(--white); color:var(--ugc-blue);
+  font:700 14px/20px var(--font); cursor:pointer; transition:background var(--duration-fast)}
+.mode+.mode{border-left:1px solid var(--ugc-blue)}
+.mode:hover{background:var(--surface-subtle)}
+.mode[aria-pressed="true"]{background:var(--ugc-blue); color:var(--white)}
+.browser,.web-header{display:none}
+.is-web .layout,.layout.is-web{grid-template-columns:minmax(0,1fr)}
+.device.is-web{max-width:1280px; justify-self:stretch; padding:0; background:none; box-shadow:var(--shadow-card); border-radius:var(--radius-lg)}
+.screen.is-web{min-height:0}
+.screen.is-web .status,.screen.is-web .app-header,.screen.is-web .picker,.screen.is-web .pills,.screen.is-web .tabbar{display:none}
+.screen.is-web .browser{display:flex; align-items:center; gap:var(--space-4); padding:var(--space-2) var(--space-4); background:#E5E8F0; color:#4A5070; font:400 12px/16px var(--font)}
+.browser .dots{display:flex; gap:6px}
+.browser .dots i{width:10px; height:10px; border-radius:var(--radius-pill); background:#C9CEDC}
+.browser .url{flex:1; max-width:420px; padding:var(--space-1) var(--space-3); background:var(--white); border-radius:var(--radius-pill)}
+.screen.is-web .web-header{display:flex; align-items:center; gap:var(--space-6); height:72px; padding:0 var(--space-4); border-bottom:1px solid var(--app-line)}
+.web-nav{display:none; list-style:none; margin:0; padding:0; gap:var(--space-6); font:800 13px/20px var(--font); letter-spacing:.04em; text-transform:uppercase}
+.web-nav li{padding:var(--space-6) 0; border-bottom:3px solid transparent; white-space:nowrap}
+.web-nav li.on{color:var(--app-cyan); border-bottom-color:var(--app-cyan)}
+.web-tools{display:flex; align-items:center; gap:var(--space-2); margin-left:auto}
+.web-icon{display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border:0; border-radius:var(--radius-lg); background:var(--app-cyan); color:var(--app-ink); cursor:pointer}
+.web-icon .icon{stroke-width:2.5}
+.web-account{display:none; align-items:center; gap:var(--space-2); font:800 13px/20px var(--font); text-transform:uppercase; letter-spacing:.04em}
+.web-menu{display:inline-flex; width:44px; height:44px; align-items:center; justify-content:center}
+.screen.is-web .app{padding:var(--space-8) var(--space-4)}
+.screen.is-web .rail{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+@media (min-width:840px){
+  .screen.is-web .web-header{padding:0 var(--space-8)}
+  .screen.is-web .web-account{display:inline-flex}
+  .screen.is-web .app{padding:var(--space-12) var(--space-8)}
+  .screen.is-web .search-view{gap:var(--space-12)}
+  .screen.is-web .ask{grid-template-columns:minmax(0,1fr) auto; column-gap:var(--space-4); max-width:960px}
+  .screen.is-web .ask>*{grid-column:1/-1}
+  .screen.is-web .ask label{font-size:40px; line-height:48px}
+  .screen.is-web .ask textarea{grid-column:1; grid-row:3; min-height:64px}
+  .screen.is-web .ask #go{grid-column:2; grid-row:3; align-self:start; min-height:64px}
+  .screen.is-web .results{grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:var(--space-6)}
+  .screen.is-web .results>h2,.screen.is-web .results>.empty{grid-column:1/-1}
+}
+@media (min-width:1240px){
+  .screen.is-web .web-nav{display:flex}
+  .screen.is-web .web-menu{display:none}
+}
+/* Réservation sur le web : fenêtre modale (§25) */
+.book-dialog{display:grid; gap:var(--space-6)}
+.screen.is-web .book-view{position:fixed; inset:0; z-index:20; display:grid; justify-items:center; align-items:start; padding:var(--space-8) var(--space-4); overflow-y:auto; background:rgba(4,7,43,.72)}
+.screen.is-web .book-view[hidden]{display:none}
+.screen.is-web .book-dialog{width:100%; max-width:640px; padding:var(--space-6) var(--space-4); background:var(--app-light); color:var(--app-ink); border-radius:var(--radius-lg); overflow:clip; box-shadow:var(--shadow-overlay)}
+@media (min-width:768px){
+  .screen.is-web .book-dialog{padding:var(--space-6) var(--space-8)}
+  .screen.is-web .book-head,.screen.is-web .steps{margin-left:calc(-1 * var(--space-8)); margin-right:calc(-1 * var(--space-8))}
+}
+
 /* ---------- Note produit ---------- */
 .notecol{display:grid; gap:var(--space-4); min-width:0}
 .panel{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:var(--space-6) var(--space-4); display:grid; gap:var(--space-3)}
@@ -304,6 +360,9 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 3 20 12 6 21Z"/></symbol>
   <symbol id="i-armchair" viewBox="0 0 24 24"><path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3"/><path d="M3 16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z"/><path d="M5 18v2"/><path d="M19 18v2"/></symbol>
   <symbol id="i-circle-user" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
   <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
@@ -317,10 +376,27 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
     <p class="disclaimer"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>Prototype conceptuel non officiel – Caroline Camilleri</p>
   </header>
 
-  <div class="layout">
+  <div class="modes" role="group" aria-label="Canal affiché dans la démo">
+    <button type="button" class="mode" data-mode="app" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>Application mobile</button>
+    <button type="button" class="mode" data-mode="web" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg>Site web</button>
+  </div>
+
+  <div class="layout" id="layout">
     <!-- ---------- Application ---------- -->
-    <section class="device" aria-label="Application mobile, démonstration">
+    <section class="device" id="device" aria-label="Démonstration">
       <div class="screen" id="screen">
+        <div class="browser" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="url">Prototype · site web (démo)</span></div>
+        <header class="web-header">
+          <span class="logo-slot" role="img" aria-label="Emplacement du logo UGC officiel">LOGO UGC</span>
+          <ul class="web-nav" aria-hidden="true">
+            <li>Films</li><li>Cinémas</li><li>Labels &amp; sélections</li><li>Événements</li><li>UGC Illimité</li><li class="on">Assistant</li>
+          </ul>
+          <div class="web-tools">
+            <button type="button" class="web-icon" id="webSearch" aria-label="Rechercher une séance avec l'assistant"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></button>
+            <span class="web-account" aria-hidden="true"><svg class="icon"><use href="#i-circle-user"/></svg><span>Mon compte</span></span>
+            <span class="web-menu" aria-hidden="true"><svg class="icon"><use href="#i-menu"/></svg></span>
+          </div>
+        </header>
         <div class="status" aria-hidden="true"><span>20:12</span><span>5G · 82 %</span></div>
         <header class="app-header">
           <span class="logo-slot" role="img" aria-label="Emplacement du logo UGC officiel">LOGO UGC</span>
@@ -417,6 +493,7 @@ ul.clean{margin:0; padding-left:20px; display:grid; gap:var(--space-2)}
       <section class="panel">
         <h2>Comment fonctionne la démo</h2>
         <p>La demande est interprétée par un moteur de règles local, exécuté dans le navigateur : il repère l'envie, le jour, l'horaire, la version, le public et le cinéma, puis classe les séances du programme fictif. Aucune donnée n'est envoyée à un service externe. En production, ce moteur servirait de repli si le modèle d'IA ne répond pas.</p>
+        <p>Le sélecteur « Application mobile | Site web » montre le même assistant sur les deux canaux : un seul moteur et un seul parcours, deux interfaces adaptées (écran plein sur mobile, fenêtre de réservation sur le web).</p>
         <p>Après « Réserver », la démo simule la suite du parcours : nombre de places, choix des sièges sur un plan de salle fictif, récapitulatif puis confirmation avec un numéro fictif. Les tarifs et le paiement ne sont pas simulés.</p>
       </section>
 
@@ -474,7 +551,21 @@ const EXAMPLES = ["Un film drôle ce soir après 20 h, avec mon ado de 13 ans","
 const $ = id=>document.getElementById(id);
 const chips=$("chips");
 EXAMPLES.forEach(e=>{const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=e; b.onclick=()=>{$("q").value=e; run();}; chips.append(b);});
-$("searchBtn").onclick=()=>{ if(bk) closeBooking(true); else $("q").focus(); };
+$("searchBtn").onclick=$("webSearch").onclick=()=>{ if(bk) closeBooking(true); else $("q").focus(); };
+
+/* ---------- Canal affiché : application mobile ou site web ---------- */
+const isWeb = ()=>$("screen").classList.contains("is-web");
+const INERT = ()=>[...document.querySelectorAll(".page-head,.modes,.notecol,.web-header,.browser,#searchView,.app-note")];
+function setMode(m){
+  if(bk) closeBooking();
+  const web=m==="web";
+  ["layout","device","screen"].forEach(id=>$(id).classList.toggle("is-web",web));
+  $("device").setAttribute("aria-label",web?"Site web, démonstration":"Application mobile, démonstration");
+  document.querySelectorAll(".mode").forEach(b=>b.setAttribute("aria-pressed",b.dataset.mode===m));
+  try{ history.replaceState(null,"",web?"#web":location.pathname+location.search); }catch(e){}
+}
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && bk && isWeb()) closeBooking(); });
 
 /* ---------- Moteur de règles local ---------- */
 function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
@@ -674,17 +765,24 @@ function takenSeats(s){
 function openBooking(s,trigger){
   const taken=takenSeats(s); const free=ROWS.length*PER_ROW-taken.size;
   bk={s, f:FILMS[s.film], trigger, taken, maxQty:Math.min(MAX_QTY,free), qty:Math.min(2,free), seats:[]};
-  $("searchView").hidden=true; $("bookView").hidden=false; $("screen").classList.add("is-light");
+  if(isWeb()){
+    // Fenêtre modale : le reste de la page devient inerte (focus piégé), Échap ferme
+    INERT().forEach(el=>el.inert=true); document.body.style.overflow="hidden";
+  } else {
+    $("searchView").hidden=true; $("screen").classList.add("is-light");
+  }
+  $("bookView").hidden=false;
   showStep(1);
 }
 function closeBooking(focusQuery){
   $("bookView").hidden=true; $("bookView").innerHTML=""; $("searchView").hidden=false; $("screen").classList.remove("is-light");
+  INERT().forEach(el=>el.inert=false); document.body.style.overflow="";
   const t=bk.trigger; bk=null;
   if(focusQuery){ $("q").focus(); $("q").select(); } else t.focus();
 }
 function filmHeader(){
   const s=bk.s;
-  return '<div class="book-head"><div><h2>'+esc(bk.f.t)+'</h2><p class="book-sub"><span>'+esc(DAY[s.day])+'</span><span>'+s.time+'</span><span>'+(s.v==="VO"?"VOSTF":"VF")+'</span><span>'+esc(s.cine)+'</span></p></div>'+
+  return '<div class="book-head"><div><h2 id="bkT">'+esc(bk.f.t)+'</h2><p class="book-sub"><span>'+esc(DAY[s.day])+'</span><span>'+s.time+'</span><span>'+(s.v==="VO"?"VOSTF":"VF")+'</span><span>'+esc(s.cine)+'</span></p></div>'+
     '<button type="button" class="close" data-act="close" aria-label="Fermer et revenir aux propositions">'+icon("x")+'</button></div>';
 }
 function stepper(n){
@@ -747,7 +845,7 @@ function showStep(n){
       '<div class="actions"><button type="button" class="btn btn-primary btn-block" data-act="new">'+icon("search")+'Nouvelle recherche</button>'+
       '<button type="button" class="btn btn-outline btn-block" data-act="list">Revenir aux propositions</button></div>';
   }
-  v.innerHTML=html; v.dataset.step=n;
+  v.innerHTML='<div class="book-dialog" role="dialog" aria-modal="true" aria-labelledby="bkT">'+html+'</div>'; v.dataset.step=n;
   if(n===1) updateQty();
   if(n===2) updateSeats();
   v.querySelector(".step-title").focus();
@@ -768,6 +866,7 @@ function updateSeats(warn){
 }
 $("bookView").addEventListener("click",e=>{
   if(!bk) return;
+  if(e.target===$("bookView")){ closeBooking(); return; }
   const v=$("bookView"), n=+v.dataset.step;
   const seat=e.target.closest("[data-seat]");
   if(seat){
@@ -804,6 +903,7 @@ function run(){ const q=$("q").value.trim(); if(!q) return; render(localPick(q))
 $("askForm").addEventListener("submit",e=>{e.preventDefault(); run();});
 $("q").addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){e.preventDefault(); run();} });
 render(localPick($("q").value));
+if(location.hash==="#web") setMode("web");
 })();
 </script>
 </body>
